@@ -2,7 +2,6 @@
 # update the conda-forge.yaml and/or the recipe/meta.yaml.
 
 language: objective-c
-osx_image: xcode6.4
 
 env:
   global:
