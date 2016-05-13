@@ -20,11 +20,10 @@ if [ "$(uname)" == "Darwin" ]; then
   export MACOSX_DEPLOYMENT_TARGET=10.7
 fi
 
-CXXFLAGS="${CXXFLAGS} -fPIC"
+export CXXFLAGS="${CXXFLAGS} -fPIC"
 
 cmake \
 	-DCMAKE_INSTALL_PREFIX=$PREFIX \
-	-DCMAKE_CXX_FLAGS=$CXXFLAGS \
 	-DBUILD_PYTHON=off \
 	-DBUILD_JAVA=off \
 	-DBUILD_C_GLIB=off \
