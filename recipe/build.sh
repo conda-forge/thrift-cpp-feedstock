@@ -12,13 +12,15 @@ if [ "$(uname)" == "Darwin" ]; then
   export CC=clang
   export CXX=clang++
   export MACOSX_VERSION_MIN="10.7"
-  export CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
-  export CXXFLAGS="${CXXFLAGS} -stdlib=libc++ -std=c++11"
+  CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
+  CXXFLAGS="${CXXFLAGS} -stdlib=libc++ -std=c++11"
   export LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
   export LDFLAGS="${LDFLAGS} -stdlib=libc++ -std=c++11"
   export LINKFLAGS="${LDFLAGS}"
   export MACOSX_DEPLOYMENT_TARGET=10.7
 fi
+
+export CXXFLAGS="${CXXFLAGS} -fPIC"
 
 cmake \
 	-DCMAKE_INSTALL_PREFIX=$PREFIX \
