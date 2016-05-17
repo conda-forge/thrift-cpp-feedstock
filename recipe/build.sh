@@ -18,6 +18,9 @@ if [ "$(uname)" == "Darwin" ]; then
   export LDFLAGS="${LDFLAGS} -stdlib=libc++ -std=c++11"
   export LINKFLAGS="${LDFLAGS}"
   export MACOSX_DEPLOYMENT_TARGET=10.7
+elif [ "$(uname)" == "Linux" ]; then
+  # Stop Boost from using libquadmath.
+  CXXFLAGS="${CXXFLAGS} -DBOOST_MATH_DISABLE_FLOAT128"
 fi
 
 export CXXFLAGS="${CXXFLAGS} -fPIC"
