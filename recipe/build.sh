@@ -1,27 +1,20 @@
 #!/bin/env bash
 
+# FIXME: This is a hack to make sure the environment is activated.
+# The reason this is required is due to the conda-build issue
+# mentioned below.
+#
+# https://github.com/conda/conda-build/issues/910
+#
+source activate "${CONDA_DEFAULT_ENV}"
+
+
 BOOST_ROOT=$PREFIX
 ZLIB_ROOT=$PREFIX
 LIBEVENT_ROOT=$PREFIX
 
 export OPENSSL_ROOT=$PREFIX
 export OPENSSL_ROOT_DIR=$PREFIX
-
-if [ "$(uname)" == "Darwin" ]; then
-  # C++11 finagling for Mac OSX
-  export CC=clang
-  export CXX=clang++
-  export MACOSX_VERSION_MIN="10.7"
-  CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
-  CXXFLAGS="${CXXFLAGS} -stdlib=libc++ -std=c++11"
-  export LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_VERSION_MIN}"
-  export LDFLAGS="${LDFLAGS} -stdlib=libc++ -std=c++11"
-  export LINKFLAGS="${LDFLAGS}"
-  export MACOSX_DEPLOYMENT_TARGET=10.7
-elif [ "$(uname)" == "Linux" ]; then
-  # Stop Boost from using libquadmath.
-  CXXFLAGS="${CXXFLAGS} -DBOOST_MATH_DISABLE_FLOAT128"
-fi
 
 export CXXFLAGS="${CXXFLAGS} -fPIC"
 
