@@ -13,7 +13,7 @@ build:
 
 requirements:
   build:
-    - boost
+    - boost 1.60*
     - autoconf
     - automake
     - cmake
