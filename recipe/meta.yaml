@@ -9,25 +9,25 @@ source:
 
 build:
   skip: true  # [win]
-  number: 2
+  number: 3
 
 requirements:
   build:
     - toolchain
-    - boost
+    - boost 1.61.*
     - autoconf
     - automake
     - cmake
     - libtool
-    - openssl
+    - openssl 1.0.*
     - bison
     - flex
     - pkg-config
-    - zlib 1.2*
+    - zlib 1.2.*
 
   run:
-    - openssl
-    - zlib 1.2*
+    - openssl 1.0.*
+    - zlib 1.2.*
 
 test:
   commands:
