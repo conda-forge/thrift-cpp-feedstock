@@ -9,12 +9,12 @@ source:
 
 build:
   skip: true  # [win]
-  number: 3
+  number: 4
 
 requirements:
   build:
     - toolchain
-    - boost 1.61.*
+    - boost 1.62.*
     - autoconf
     - automake
     - cmake
