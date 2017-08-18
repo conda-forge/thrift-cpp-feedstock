@@ -11,7 +11,7 @@ source:
     - unix_workaround-for-boost-1.63.0.patch  # [unix]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and not py35]
   features:
     - vc14  # [win and py35]
@@ -19,7 +19,7 @@ build:
 requirements:
   build:
     - toolchain
-    - boost 1.63.*
+    - boost-cpp 1.64.*
     - autoconf        # [unix]
     - automake        # [unix]
     - cmake
