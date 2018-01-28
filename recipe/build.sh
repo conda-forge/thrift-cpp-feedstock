@@ -23,6 +23,7 @@ cmake \
 	-DBUILD_PYTHON=off \
 	-DBUILD_JAVA=off \
 	-DBUILD_C_GLIB=off \
+    -DBUILD_TESTING=off \
 	.
 
 make
