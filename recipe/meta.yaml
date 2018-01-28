@@ -9,9 +9,10 @@ source:
 
   patches:
     - unix_workaround-for-boost-1.63.0.patch  # [unix]
+    - realloc-xcode.patch  # [osx]
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win and not py35]
   features:
     - vc14  # [win and py35]
