@@ -1,23 +1,4 @@
-mkdir %SRC_DIR%\thirdparty\dist\winflexbison
-pushd %SRC_DIR%\thirdparty\dist\winflexbison
-
-set WIN_FLEX_BIZON_VERSION=2.4.9
-set LIBEVENT_VERSION=2.1.7
-
-curl -SLO https://github.com/lexxmark/winflexbison/releases/download/v.%WIN_FLEX_BIZON_VERSION%/win_flex_bison-%WIN_FLEX_BIZON_VERSION%.zip
-7za x -y win_flex_bison-%WIN_FLEX_BIZON_VERSION%.zip
-if errorlevel 1 exit 1
-
-popd
-
-mkdir %SRC_DIR%\thirdparty\src
-pushd %SRC_DIR%\thirdparty\src
-
-curl -SLO https://github.com/nmathewson/Libevent/archive/release-%LIBEVENT_VERSION%-rc.zip
-7za x -y release-%LIBEVENT_VERSION%-rc.zip
-if errorlevel 1 exit 1
-
-cd Libevent-release-%LIBEVENT_VERSION%-rc
+pushd thirdparty\src\libevent
 nmake -f Makefile.nmake
 mkdir lib
 move *.lib lib\
@@ -37,13 +18,13 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 cd %SRC_DIR%\build
 
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
-                             -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\Libevent-release-%LIBEVENT_VERSION%-rc" ^
+                             -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
                              -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
                              -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
                              -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
                              -DBUILD_PYTHON=OFF ^
                              -DBUILD_JAVA=OFF ^
                              -DBUILD_C_GLIB=OFF ^
-                             -DWITH_SHARED_LIB=OFF "%SRC_DIR%"
+                             -DWITH_SHARED_LIB=ON "%SRC_DIR%"
 
 cmake --build . --target install --config Release
