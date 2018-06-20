@@ -17,6 +17,8 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 cd %SRC_DIR%\build
 
+:: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
+
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
                              -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
                              -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
@@ -25,6 +27,7 @@ cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
                              -DBUILD_PYTHON=OFF ^
                              -DBUILD_JAVA=OFF ^
                              -DBUILD_C_GLIB=OFF ^
-                             -DWITH_SHARED_LIB=ON "%SRC_DIR%"
+                             -DWITH_SHARED_LIB=OFF ^
+                             "%SRC_DIR%"
 
 cmake --build . --target install --config Release
