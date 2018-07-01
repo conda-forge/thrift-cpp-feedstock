@@ -12,30 +12,29 @@ source:
     - realloc-xcode.patch  # [osx]
 
 build:
-  number: 2
-  skip: true  # [win and not py35]
-  features:
-    - vc14  # [win and py35]
+  number: 3
+  skip: true  # [win and vc<14]
 
 requirements:
   build:
-    - toolchain
-    - boost-cpp 1.64.*
     - autoconf        # [unix]
     - automake        # [unix]
     - cmake
     - libtool         # [unix]
-    - openssl 1.0.*
+    - pkg-config      # [unix]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - boost-cpp
+    - openssl
     - bison           # [unix]
     - flex            # [unix]
-    - pkg-config      # [unix]
-    - zlib 1.2.*
-    - python          # [win]
+    - zlib
     - 7za             # [win]
 
   run:
-    - openssl 1.0.*
-    - zlib 1.2.*
+    - openssl
+    - zlib
 
 test:
   requires:
