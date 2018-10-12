@@ -17,21 +17,22 @@ build:
 
 requirements:
   build:
-    - autoconf        # [unix]
-    - automake        # [unix]
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+    # - autoconf        # [unix]
+    # - automake        # [unix]
+    - bison           # [unix]
     - cmake
+    - flex            # [unix]
     - libtool         # [unix]
+    - m4              # [unix]
     - pkg-config      # [unix]
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - make            # [unix]
   host:
     - boost-cpp
     - openssl
-    - bison           # [unix]
-    - flex            # [unix]
     - zlib
     - 7za             # [win]
-
   run:
     - openssl
     - zlib
