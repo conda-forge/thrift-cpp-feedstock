@@ -1,19 +1,30 @@
+{% set version = "0.11.0" %}
+{% set WIN_FLEX_BIZON_VERSION = "2.4.9" %}
+{% set LIBEVENT_VERSION = "2.1.7" %}
+
 package:
   name: thrift-cpp
-  version: "0.11.0"
+  version: {{ version }}
 
 source:
-  fn: thrift-0.11.0.tar.gz
-  url: http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz
-  sha256: c4ad38b6cb4a3498310d405a91fef37b9a8e79a50cd0968148ee2524d2fa60c2
-
-  patches:
-    - unix_workaround-for-boost-1.63.0.patch  # [unix]
-    - realloc-xcode.patch  # [osx]
+  - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
+    sha256: c4ad38b6cb4a3498310d405a91fef37b9a8e79a50cd0968148ee2524d2fa60c2
+    patches:
+      - unix_workaround-for-boost-1.63.0.patch  # [unix]
+      - realloc-xcode.patch  # [osx]
+      - 0001-disable-qt5.patch
+  {% if win %}
+  - url: https://github.com/lexxmark/winflexbison/releases/download/v.{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
+    folder: thirdparty\dist\winflexbison
+  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-rc.zip
+    folder: thirdparty\src\libevent
+  {% endif %}
 
 build:
   number: 1003
   skip: true  # [win and vc<14]
+  run_exports:
+    - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
 
 requirements:
   build:
@@ -29,18 +40,15 @@ requirements:
     - pkg-config      # [unix]
     - make            # [unix]
   host:
-    - boost-cpp
+    - libboost        {{ boost }}
+    - libevent        # [unix]
     - openssl
     - zlib
-    - 7za             # [win]
   run:
     - openssl
     - zlib
 
 test:
-  requires:
-    - python {{ environ['PY_VER'] + '*' }}  # [win]
-
   commands:
     - test -f $PREFIX/bin/thrift                                        # [unix]
     - test -f $PREFIX/lib/libthrift.a                                   # [unix]
