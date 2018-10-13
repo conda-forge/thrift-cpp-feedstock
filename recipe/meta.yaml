@@ -40,7 +40,7 @@ requirements:
     - pkg-config      # [unix]
     - make            # [unix]
   host:
-    - libboost        {{ boost }}
+    - boost-cpp
     - libevent        # [unix]
     - openssl
     - zlib
