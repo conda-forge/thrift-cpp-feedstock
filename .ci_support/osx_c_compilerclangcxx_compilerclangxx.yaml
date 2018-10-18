@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 boost_cpp:
-- 1.67.0
+- 1.68.0
 build_number_decrement:
 - '0'
 c_compiler:
@@ -12,6 +12,8 @@ channel_targets:
 - conda-forge gcc7
 cxx_compiler:
 - clangxx
+libevent:
+- 2.0.22
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
@@ -20,6 +22,8 @@ openssl:
 - 1.0.2
 pin_run_as_build:
   boost-cpp:
+    max_pin: x.x.x
+  libevent:
     max_pin: x.x.x
   openssl:
     max_pin: x.x.x

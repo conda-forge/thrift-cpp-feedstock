@@ -1,5 +1,5 @@
 boost_cpp:
-- 1.67.0
+- 1.68.0
 build_number_decrement:
 - '0'
 c_compiler:
@@ -11,11 +11,15 @@ channel_targets:
 cxx_compiler:
 - gxx
 docker_image:
-- conda/c3i-linux-64
+- condaforge/linux-anvil-comp7
+libevent:
+- 2.0.22
 openssl:
 - 1.0.2
 pin_run_as_build:
   boost-cpp:
+    max_pin: x.x.x
+  libevent:
     max_pin: x.x.x
   openssl:
     max_pin: x.x.x
