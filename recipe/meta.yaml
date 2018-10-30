@@ -10,7 +10,7 @@ source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
     sha256: c4ad38b6cb4a3498310d405a91fef37b9a8e79a50cd0968148ee2524d2fa60c2
     patches:
-      - unix_workaround-for-boost-1.63.0.patch  # [unix]
+      # - unix_workaround-for-boost-1.63.0.patch  # [unix]
       - realloc-xcode.patch  # [osx]
       - 0001-disable-qt5.patch
   {% if win %}
@@ -41,12 +41,15 @@ requirements:
     - make            # [unix]
   host:
     - boost-cpp
+    - boost
     - libevent        # [unix]
     - openssl
     - zlib
   run:
     - openssl
     - zlib
+    - boost-cpp
+    - boost
 
 test:
   commands:
