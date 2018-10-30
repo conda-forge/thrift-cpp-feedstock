@@ -12,6 +12,7 @@ cmake \
 	-DBUILD_PYTHON=off \
 	-DBUILD_JAVA=off \
 	-DBUILD_C_GLIB=off \
+	-DNO_DEFAULT_PATH \
   -DBUILD_TESTING=off \
 	.
 
