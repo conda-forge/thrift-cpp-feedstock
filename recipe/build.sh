@@ -1,11 +1,16 @@
 #!/bin/env bash
 
+set -e
+set -x
+
 BOOST_ROOT=$PREFIX
 ZLIB_ROOT=$PREFIX
 LIBEVENT_ROOT=$PREFIX
 
 export OPENSSL_ROOT=$PREFIX
 export OPENSSL_ROOT_DIR=$PREFIX
+
+pushd "$SRC_DIR"
 
 cmake \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
