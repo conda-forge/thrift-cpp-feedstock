@@ -9,6 +9,7 @@ LIBEVENT_ROOT=$PREFIX
 
 export OPENSSL_ROOT=$PREFIX
 export OPENSSL_ROOT_DIR=$PREFIX
+export M4="$(which m4)"
 
 pushd "$SRC_DIR"
 
