@@ -21,7 +21,7 @@ cmake \
     -DBUILD_TESTING=off \
     .
 
-make
+make VERBOSE=1
 
 # TODO(wesm): The unit tests do not run in CircleCI at the moment
 # make check
