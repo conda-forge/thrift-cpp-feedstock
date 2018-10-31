@@ -17,7 +17,7 @@ cmake \
     -DBUILD_PYTHON=off \
     -DBUILD_JAVA=off \
     -DBUILD_C_GLIB=off \
-    -DCMAKE_FIND_ROOT_PATH="$PREFIX" \ 
+    -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
     -DBUILD_TESTING=off \
     .
 
