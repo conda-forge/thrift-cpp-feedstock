@@ -41,7 +41,6 @@ requirements:
     - make            # [unix]
   host:
     - boost-cpp
-    - boost
     - libevent        # [unix]
     - openssl
     - zlib
@@ -49,7 +48,6 @@ requirements:
     - openssl
     - zlib
     - boost-cpp
-    - boost
 
 test:
   commands:
