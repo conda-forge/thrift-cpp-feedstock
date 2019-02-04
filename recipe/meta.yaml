@@ -21,7 +21,7 @@ source:
   {% endif %}
 
 build:
-  number: 1000
+  number: 1001
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
@@ -30,8 +30,6 @@ requirements:
   build:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    # - autoconf        # [unix]
-    # - automake        # [unix]
     - bison           # [unix]
     - cmake
     - flex            # [unix]
