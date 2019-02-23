@@ -61,6 +61,7 @@ jobs:
         $VSBootstrapperURL = 'https://aka.ms/vs/16/pre/vs_Enterprise.exe'
         Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_Enterprise.exe"
 
+        $FilePath = "${env:Temp}\vs_Enterprise.exe"
         $WorkLoads = '--add Microsoft.VisualStudio.Component.VC.v14 '
         $Arguments = ('/c', $FilePath, $WorkLoads, '--quiet', '--norestart', '--wait', '--nocache' )
 
