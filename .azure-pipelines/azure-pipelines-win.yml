@@ -130,7 +130,6 @@ jobs:
       displayName: Build recipe (vs2008)
       env:
         VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\bin"
-        VS140COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\Preview\\Common7\\Tools"
         PYTHONUNBUFFERED: 1
       condition: contains(variables['CONFIG'], 'vs2008')
 
@@ -139,6 +138,8 @@ jobs:
       displayName: Build recipe
       env:
         PYTHONUNBUFFERED: 1
+        VS140COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\Preview\\Common7\\Tools"
+        VS141COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\Preview\\Common7\\Tools"
       condition: not(contains(variables['CONFIG'], 'vs2008'))
 
     - script: |
