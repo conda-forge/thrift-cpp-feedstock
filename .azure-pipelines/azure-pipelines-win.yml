@@ -84,7 +84,7 @@ jobs:
 
             $files = Get-ChildItem -Path ${env:Temp} -Filter dd*.log
             foreach ($f in $files){
-              Write-Host "Reading Log output {$f_.FullName}"
+              Write-Host "Reading Log output" + $f_.FullName
               Write-Host "================================="
               $content = Get-Content -Path $f.FullName
               foreach ($line in $content) {
