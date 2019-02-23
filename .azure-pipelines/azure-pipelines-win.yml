@@ -83,9 +83,12 @@ jobs:
             # Get-Content $customLogFilePath | Write-Host
 
             $files = Get-ChildItem -Path ${env:Temp} -Filter dd*.log
+
+            Write-Host $files
+
             ForEach-Object -InputObject $files {
-              Write-Host $_
-              Get-Content $_ | Write-Host
+              Write-Host ${env:Temp}\$_
+              Get-Content ${env:Temp}\$_ | Write-Host
             }
             
             exit $exitCode
