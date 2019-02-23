@@ -63,7 +63,8 @@ jobs:
           Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_Enterprise.exe"
 
           $FilePath = "${env:Temp}\vs_Enterprise.exe"
-          $WorkLoads = '--includeRecommended  --add Microsoft.VisualStudio.Component.VC.v14 '
+          $WorkLoads = '--installPath "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise"' + `
+                          '--add Microsoft.VisualStudio.Component.VC.v14 '
           $Arguments = ('/c', $FilePath, 'modify', $WorkLoads, '--quiet', '--norestart', '--wait', '--nocache' )
 
           Write-Host "Starting Install ..."
