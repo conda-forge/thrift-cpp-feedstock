@@ -54,6 +54,36 @@ jobs:
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Patch vs2008 (if needed)
 
+    - powershell: |
+        Set-PSDebug -Trace 1
+
+        Write-Host "Downloading Bootstrapper ..."
+        $VSBootstrapperURL = 'https://aka.ms/vs/16/pre/vs_Enterprise.exe'
+        Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_Enterprise.exe"
+
+        $WorkLoads = '--add Microsoft.VisualStudio.Component.VC.v14 '
+        $Arguments = ('/c', $FilePath, $WorkLoads, '--quiet', '--norestart', '--wait', '--nocache' )
+
+        Write-Host "Starting Install ..."
+        $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru
+        $exitCode = $process.ExitCode
+
+        if ($exitCode -eq 0 -or $exitCode -eq 3010)
+        {
+          Write-Host -Object 'Installation successful'
+          return $exitCode
+        }
+        else
+        {
+          Write-Host -Object "Non zero exit code returned by the installation process : $exitCode."
+
+          # this wont work because of log size limitation in extension manager
+          # Get-Content $customLogFilePath | Write-Host
+
+          exit $exitCode
+        }
+      displayName: Install VC14
+
     - task: CondaEnvironment@1
       inputs:
         packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
