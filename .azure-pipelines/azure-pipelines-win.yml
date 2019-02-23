@@ -61,6 +61,8 @@ jobs:
           $VSBootstrapperURL = 'https://aka.ms/vs/16/pre/vs_Enterprise.exe'
           Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_Enterprise.exe"
 
+          Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio"
+
           $FilePath = "${env:Temp}\vs_Enterprise.exe"
           $WorkLoads = '--installPath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"' + `
                           '--add Microsoft.VisualStudio.Component.VC.v14 '
