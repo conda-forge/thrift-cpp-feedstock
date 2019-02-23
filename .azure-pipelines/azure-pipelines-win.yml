@@ -82,9 +82,12 @@ jobs:
             # this wont work because of log size limitation in extension manager
             # Get-Content $customLogFilePath | Write-Host
 
-            Get-ChildItem -Path ${env:Temp}
-            Get-ChildItem -Path (${env:Temp} + '\..')
-
+            $files = Get-ChildItem -Path ${env:Temp} -Filter dd*.log
+            ForEach-Object -InputObject $files {
+              Write-Host $_
+              Get-Content $_ | Write-Host
+            }
+            
             exit $exitCode
           }
         } 
