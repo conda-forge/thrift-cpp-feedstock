@@ -82,6 +82,9 @@ jobs:
             # this wont work because of log size limitation in extension manager
             # Get-Content $customLogFilePath | Write-Host
 
+            Get-ChildItem -Path ${env:Temp}
+            Get-ChildItem -Path (${env:Temp} + '\..')
+
             exit $exitCode
           }
         } 
