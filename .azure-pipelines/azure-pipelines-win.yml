@@ -82,12 +82,11 @@ jobs:
             # this wont work because of log size limitation in extension manager
             # Get-Content $customLogFilePath | Write-Host
 
-            Get-ChildItem -Path ${env:Temp} -Filter dd*.log |
-            ForEach-Object -InputObject $files {
-              Write-Host "Log output ==============="
-              Write-Host $_.FullName
-
-              $content = Get-Content $_.FullName
+            $files = Get-ChildItem -Path ${env:Temp} -Filter dd*.log
+            foreach ($f in $files){
+              Write-Host "Reading Log output {$f_.FullName}"
+              Write-Host "================================="
+              $content = Get-Content -Path $f.FullName
               Write-Host $content
             }
             
