@@ -17,6 +17,10 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 cd %SRC_DIR%\build
 
+@echo on
+
+call "C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.00
+
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
