@@ -60,8 +60,8 @@ jobs:
       displayName: run_conda_forge_build_setup
      
      - script: |
-        echo ON
-        conda update --all
+         echo ON
+         conda update --all
        displayName: conda update --all
 
     - script: |
