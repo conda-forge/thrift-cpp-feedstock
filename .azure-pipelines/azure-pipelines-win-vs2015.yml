@@ -26,7 +26,13 @@ jobs:
     # TODO: Fast finish on azure pipelines?
     - script: |
         ECHO ON
-        choco install miniconda3 --params="'/D:D:\Miniconda3 /InstallationType:AllUsers'" --yes
+        choco install miniconda3 --params="'/D:D:\Miniconda3' '/InstallationType:AllUsers'" --yes
+     
+     - powershell: |
+        $content = Get-Content -Path C:\ProgramData\chocolatey\logs\chocolatey.log
+        foreach ($line in $content) {
+          Write-Host $line
+        }
 
     # Cygwin's git breaks conda-build. (See https://github.com/conda-forge/conda-smithy-feedstock/pull/2.)
     # - script: rmdir C:\cygwin /s /q
