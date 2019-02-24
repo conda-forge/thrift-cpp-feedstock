@@ -18,7 +18,7 @@ jobs:
   steps:
     - script: |
         @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-      displayname: Install choco
+      displayName: Install choco
   
     - powershell: |
         Write-Host "##vso[task.prependpath]C:\ProgramData\chocolatey\bin"
@@ -62,7 +62,7 @@ jobs:
      - script: |
         echo ON
         conda update --all
-      displayName: conda update --all
+       displayName: conda update --all
 
     - script: |
         conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
