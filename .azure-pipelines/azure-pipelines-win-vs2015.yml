@@ -3,7 +3,7 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: win-vs2015
+- job: win_vs2015
   pool:
     vmImage: vs2015-win2012r2
   timeoutInMinutes: 240
