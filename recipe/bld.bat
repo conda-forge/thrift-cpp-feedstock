@@ -1,6 +1,6 @@
 @echo on
 
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.0
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" amd64 -vcvars_ver=14.0
 
 pushd thirdparty\src\libevent
 nmake -f Makefile.nmake
@@ -24,7 +24,9 @@ cd %SRC_DIR%\build
 
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
-cmake -G "Visual Studio 15 2017 Win64" -T "v140" -DCMAKE_BUILD_TYPE=Release ^
+set "CMAKE_GENERATOR=Visual Studio 15 2017 Win64" -T "v140"
+
+cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
                              -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
                              -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
                              -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
