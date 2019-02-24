@@ -59,10 +59,10 @@ jobs:
         run_conda_forge_build_setup
       displayName: run_conda_forge_build_setup
      
-     - script: |
-         echo ON
-         conda update --all
-       displayName: conda update --all
+    - script: |
+        echo ON
+        conda update --all
+      displayName: conda update --all
 
     - script: |
         conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
