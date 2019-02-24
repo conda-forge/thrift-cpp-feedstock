@@ -51,26 +51,33 @@ jobs:
     - script: set PYTHONUNBUFFERED=1
 
     # Configure the VM
-    - script: setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
+    - script: |
+        echo ON
+        CALL activate base
+        setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
     
     # Configure the VM.
     - script: |
         echo ON
+        CALL activate base
         run_conda_forge_build_setup
       displayName: run_conda_forge_build_setup
      
     - script: |
         echo ON
+        CALL activate base
         conda update --all
       displayName: conda update --all
 
     - script: |
+        CALL activate base
         conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
       displayName: Build recipe
       env:
         PYTHONUNBUFFERED: 1
 
     - script: |
+        CALL activate base
         upload_package .\ .\recipe .ci_support\%CONFIG%.yaml
       env:
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
