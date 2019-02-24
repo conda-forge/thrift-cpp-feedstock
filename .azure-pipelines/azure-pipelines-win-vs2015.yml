@@ -18,6 +18,7 @@ jobs:
   steps:
     - script: |
         @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+      displayname: Install choco
   
     - powershell: |
         Write-Host "##vso[task.prependpath]C:\ProgramData\chocolatey\bin"
@@ -27,12 +28,14 @@ jobs:
     - script: |
         ECHO ON
         choco install miniconda3 --params="'/D=D:\Miniconda3 /InstallationType=AllUsers'" --yes
+      displayName: Install miniconda3  
         
     - powershell: |
         $content = Get-Content -Path C:\ProgramData\chocolatey\logs\chocolatey.log
         foreach ($line in $content) {
           Write-Host $line
         }
+      displayName: miniconda3 installation 
 
     # Cygwin's git breaks conda-build. (See https://github.com/conda-forge/conda-smithy-feedstock/pull/2.)
     # - script: rmdir C:\cygwin /s /q
@@ -52,10 +55,14 @@ jobs:
     
     # Configure the VM.
     - script: |
+        echo ON
         run_conda_forge_build_setup
+      displayName: run_conda_forge_build_setup
+     
+     - script: |
+        echo ON
         conda update --all
-
-      displayName: conda-forge build setup
+      displayName: conda update --all
 
     - script: |
         conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
