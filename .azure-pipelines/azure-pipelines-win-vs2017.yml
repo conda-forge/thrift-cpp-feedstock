@@ -1,0 +1,85 @@
+# This file was generated automatically from conda-smithy. To update this configuration,
+# update the conda-forge.yml and/or the recipe/meta.yaml.
+# -*- mode: yaml -*-
+
+jobs:
+- job: vs2017_win2016
+  pool:
+    vmImage: vs2017-win2016
+  timeoutInMinutes: 240
+  strategy:
+    maxParallel: 4
+    matrix:
+      win_c_compilervs2017cxx_compilervs2017vc141:
+        CONFIG: win_c_compilervs2017cxx_compilervs2017vc141
+        CONDA_BLD_PATH: D:\\bld\\
+        UPLOAD_PACKAGES: False
+        CONDA: D:\\Miniconda3\\
+  steps:
+    #- script: |
+    #    @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+    #  displayName: Install choco
+  
+    #- powershell: |
+    #    Write-Host "##vso[task.prependpath]C:\ProgramData\chocolatey\bin"
+    #  displayName: Add choco to PATH
+
+    # TODO: Fast finish on azure pipelines?
+    #- script: |
+    #    ECHO ON
+    #    choco install miniconda3 --params="'/D=D:\Miniconda3 /InstallationType=AllUsers'" --yes
+    #  displayName: Install miniconda3  
+        
+    #- powershell: |
+    #    $content = Get-Content -Path C:\ProgramData\chocolatey\logs\chocolatey.log
+    #    foreach ($line in $content) {
+    #      Write-Host $line
+    #    }
+    #  displayName: miniconda3 installation 
+
+    # Cygwin's git breaks conda-build. (See https://github.com/conda-forge/conda-smithy-feedstock/pull/2.)
+    # - script: rmdir C:\cygwin /s /q
+    #   continueOnError: true
+    
+    - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      displayName: Add conda to PATH
+    
+    - script: |
+        CALL activate base
+        conda install conda-build conda conda-forge::conda-forge-ci-setup -c conda-forge
+      displayName: Install conda-build and activate environment
+
+    - script: set PYTHONUNBUFFERED=1
+
+    # Configure the VM
+    - script: |
+        echo ON
+        CALL activate base
+        setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
+    
+    # Configure the VM.
+    - script: |
+        echo ON
+        CALL activate base
+        run_conda_forge_build_setup
+      displayName: run_conda_forge_build_setup
+     
+    - script: |
+        echo ON
+        CALL activate base
+        conda update --all
+      displayName: conda update --all
+
+    - script: |
+        CALL activate base
+        conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
+      displayName: Build recipe
+      env:
+        PYTHONUNBUFFERED: 1
+
+    - script: |
+        CALL activate base
+        upload_package .\ .\recipe .ci_support\%CONFIG%.yaml
+      env:
+        BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      condition: not(eq(variables['UPLOAD_PACKAGES'], 'False'))
