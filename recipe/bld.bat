@@ -24,7 +24,7 @@ cd %SRC_DIR%\build
 
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
-cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
+cmake -G "Visual Studio 15 2017 Win64" -T "v140" -DCMAKE_BUILD_TYPE=Release ^
                              -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
                              -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
                              -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
