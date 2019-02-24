@@ -28,6 +28,7 @@ build:
 
 requirements:
   build:
+    - {{ compiler('m2w64_c') }}
     - vc 14           # [win]
     - bison           # [unix]
     - cmake
