@@ -53,6 +53,7 @@ jobs:
     # Configure the VM.
     - script: |
         run_conda_forge_build_setup
+        conda update --all
 
       displayName: conda-forge build setup
 
