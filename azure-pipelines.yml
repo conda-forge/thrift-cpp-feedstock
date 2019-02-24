@@ -7,3 +7,4 @@ jobs:
   - template: ./.azure-pipelines/azure-pipelines-osx.yml
   - template: ./.azure-pipelines/azure-pipelines-win.yml
   - template: ./.azure-pipelines/azure-pipelines-win-vs2015.yml
+  - template: ./.azure-pipelines/azure-pipelines-win-vs2017.yml
