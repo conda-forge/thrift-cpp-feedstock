@@ -17,7 +17,7 @@ jobs:
   steps:
 
     - script: |
-        choco install vcpython27 visualcplusplusexpress2008 -fdv -y --debug
+        choco install visualcplusplusexpress2008 vcpython27 -fdv -y --debug
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Install vcpython27.msi
 
