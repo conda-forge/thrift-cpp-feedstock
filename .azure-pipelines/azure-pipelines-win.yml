@@ -3,31 +3,23 @@
 # -*- mode: yaml -*-
 
 jobs:
-- job: win
+- job: vs2017_win2016
   pool:
-    name: Hosted Windows 2019 with VS2019
+    vmImage: vs2017-win2016
   timeoutInMinutes: 240
   strategy:
     maxParallel: 4
     matrix:
-      win_c_compilervs2015cxx_compilervs2015vc14:
-        CONFIG: win_c_compilervs2015cxx_compilervs2015vc14
+      win_c_compilervs2008cxx_compilervs2008:
+        CONFIG: win_c_compilervs2008cxx_compilervs2008
         CONDA_BLD_PATH: D:\\bld\\
         UPLOAD_PACKAGES: False
   steps:
-    # TODO: Fast finish on azure pipelines?
-    - script: |
-        ECHO ON
-        
 
     - script: |
         choco install vcpython27 -fdv -y --debug
       condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: Install vcpython27.msi (if needed)
-
-    # Cygwin's git breaks conda-build. (See https://github.com/conda-forge/conda-smithy-feedstock/pull/2.)
-    # - script: rmdir C:\cygwin /s /q
-    #   continueOnError: true
+      displayName: Install vcpython27.msi
 
     - powershell: |
         Set-PSDebug -Trace 1
@@ -46,104 +38,127 @@ jobs:
         New-Item -Path $batchPath -ItemType "file" -Force
 
         Set-Content -Value $batchcontent -Path $batchPath
-
         Get-ChildItem -Path $batchDir
-
         Get-ChildItem -Path ($batchDir + '\..')
+      displayName: Patch VC9
 
-      condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: Patch vs2008 (if needed)
+    - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      displayName: Add conda to PATH
 
-    - powershell: |
-        try 
-        {
-          Write-Host "Downloading Bootstrapper ..."
-          $VSBootstrapperURL = 'https://aka.ms/vs/16/pre/vs_Enterprise.exe'
-          Invoke-WebRequest -Uri $VSBootstrapperURL -OutFile "${env:Temp}\vs_Enterprise.exe"
-
-          Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2019"
-
-          $FilePath = "${env:Temp}\vs_Enterprise.exe"
-          $WorkLoads = '--installPath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview" ' + `
-                          '--add Microsoft.VisualStudio.Component.VC.v14 '
-          $Arguments = ('/c', $FilePath, 'modify', $WorkLoads, '--quiet', '--norestart', '--wait', '--nocache' )
-
-          Write-Host "Starting Install ..."
-          $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru
-          $exitCode = $process.ExitCode
-
-          if ($exitCode -eq 0 -or $exitCode -eq 3010)
-          {
-            Write-Host -Object 'Installation successful'
-            return $exitCode
-          }
-          else
-          {
-            Write-Host -Object "Non zero exit code returned by the installation process : $exitCode."
-
-            # this wont work because of log size limitation in extension manager
-            # Get-Content $customLogFilePath | Write-Host
-
-            $files = Get-ChildItem -Path ${env:Temp} -Filter dd*.log
-            foreach ($f in $files){
-              Write-Host "Reading Log output" + $f_.FullName
-              Write-Host "================================="
-              $content = Get-Content -Path $f.FullName
-              foreach ($line in $content) {
-                Write-Host $line
-              }
-            }
-            
-            exit $exitCode
-          }
-        } 
-        catch 
-        {
-          Write-Host -Object "Failed to install Visual Studio. Check the logs for details in "
-          Write-Host -Object $_.Exception.Message
-          exit -1
-        }
-      displayName: Install VC14
-
-    - task: CondaEnvironment@1
-      inputs:
-        packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
-        installOptions: "-c conda-forge"
-        updateConda: false
+    # Generate conda-forge build environment
+    - script: |
+        CALL activate base
+        conda install conda-build conda conda-forge::conda-forge-ci-setup -c conda-forge
       displayName: Install conda-build and activate environment
+      failOnStderr: false
 
-    - script: set PYTHONUNBUFFERED=1
-
-    # Configure the VM
-    - script: setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
-    
-    # Configure the VM.
     - script: |
+        CALL activate base
+        setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
+      displayName: Update conda configs for current config
+    - script: |
+        CALL activate base
         run_conda_forge_build_setup
-
-      displayName: conda-forge build setup
-    
-
-    # Special cased version setting some more things!
-    - script: |
-        conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
-      displayName: Build recipe (vs2008)
-      env:
-        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\bin"
-        PYTHONUNBUFFERED: 1
-      condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: run_conda_forge_build_setup
 
     - script: |
-        conda.exe build recipe -m .ci_support\%CONFIG%.yaml --debug
+        CALL activate base
+        conda update --all
+      displayName: conda update --all
+
+    - script: |
+        rmdir C:\strawberry /s /q
+      continueOnError: true
+      displayName: remove strawberryperl
+
+    - script: |
+        CALL activate base
+        conda.exe build recipe -m .ci_support\%CONFIG%.yaml
       displayName: Build recipe
+      failOnStderr: false
       env:
+        
+        # Since we have a non-standard fake VC9 install set this override
+        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\bin"
+        
         PYTHONUNBUFFERED: 1
-        VS140COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\Common7\\Tools"
-        VS141COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\Common7\\Tools"
-      condition: not(contains(variables['CONFIG'], 'vs2008'))
 
     - script: |
         upload_package .\ .\recipe .ci_support\%CONFIG%.yaml
       env:
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
       condition: not(eq(variables['UPLOAD_PACKAGES'], 'False'))
+
+
+- job: vs2015_win2012r2
+  pool:
+    vmImage: vs2015-win2012r2
+  timeoutInMinutes: 240
+  strategy:
+    maxParallel: 4
+    matrix:
+      win_c_compilervs2015cxx_compilervs2015:
+        CONFIG: win_c_compilervs2015cxx_compilervs2015
+        CONDA_BLD_PATH: D:\\bld\\
+        UPLOAD_PACKAGES: False
+  steps:
+
+    # Set up conda since the vs2015 does not have a miniconda installation
+    - script: |
+        @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+      displayName: Install choco
+
+    - powershell: |
+        Write-Host "##vso[task.prependpath]C:\ProgramData\chocolatey\bin"
+        Write-Host "##vso[task.setvariable variable=CONDA]D:\Miniconda3\"
+      displayName: Add choco to PATH, and conda env var
+
+    - script: |
+        ECHO ON
+        choco install miniconda3 --params="'/D=D:\Miniconda3 /InstallationType=AllUsers'" --yes
+      displayName: Install miniconda3
+
+    - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      displayName: Add conda to PATH
+
+    # Generate conda-forge build environment
+    - script: |
+        CALL activate base
+        conda install conda-build conda conda-forge::conda-forge-ci-setup -c conda-forge
+      displayName: Install conda-build and activate environment
+      failOnStderr: false
+
+    - script: |
+        CALL activate base
+        setup_conda_rc .\ .\recipe .\.ci_support\%CONFIG%.yaml
+      displayName: Update conda configs for current config
+    - script: |
+        CALL activate base
+        run_conda_forge_build_setup
+      displayName: run_conda_forge_build_setup
+
+    - script: |
+        CALL activate base
+        conda update --all
+      displayName: conda update --all
+
+    - script: |
+        rmdir C:\strawberry /s /q
+      continueOnError: true
+      displayName: remove strawberryperl
+
+    - script: |
+        CALL activate base
+        conda.exe build recipe -m .ci_support\%CONFIG%.yaml
+      displayName: Build recipe
+      failOnStderr: false
+      env:
+        
+        PYTHONUNBUFFERED: 1
+
+    - script: |
+        upload_package .\ .\recipe .ci_support\%CONFIG%.yaml
+      env:
+        BINSTAR_TOKEN: $(BINSTAR_TOKEN)
+      condition: not(eq(variables['UPLOAD_PACKAGES'], 'False'))
+

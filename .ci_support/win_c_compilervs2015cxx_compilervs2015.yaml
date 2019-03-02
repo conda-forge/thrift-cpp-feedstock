@@ -9,21 +9,16 @@ channel_targets:
 cxx_compiler:
 - vs2015
 openssl:
-- 1.0.2
+- 1.1.1a
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
   openssl:
     max_pin: x.x.x
-  vc:
-    max_pin: x
   zlib:
     max_pin: x.x
-vc:
-- '14'
 zip_keys:
-- - vc
-  - c_compiler
+- - c_compiler
   - cxx_compiler
 zlib:
 - '1.2'
