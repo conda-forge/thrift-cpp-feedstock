@@ -49,6 +49,7 @@ requirements:
 
 test:
   commands:
+    - echo {{ VC140_ON_VS2017 }}                                         # [win]
     - test -f $PREFIX/bin/thrift                                        # [unix]
     - test -f $PREFIX/lib/libthrift.a                                   # [unix]
     - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
