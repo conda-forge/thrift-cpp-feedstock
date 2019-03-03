@@ -13,7 +13,7 @@ docker_image:
 libevent:
 - 2.0.22
 openssl:
-- 1.0.2
+- 1.1.1a
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
