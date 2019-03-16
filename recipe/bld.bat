@@ -20,6 +20,9 @@ cd %SRC_DIR%\build
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
+                             -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
+                             -DOpenSSL_ROOT="%LIBRARY_PREFIX%" ^
+                             -DOPENSSL_ROOT_DIR="%LIBRARY_PREFIX%" ^
                              -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
                              -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
                              -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
