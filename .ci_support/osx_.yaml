@@ -4,12 +4,16 @@ boost_cpp:
 - 1.68.0
 c_compiler:
 - clang
+c_compiler_version:
+- '4'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
 - clangxx
+cxx_compiler_version:
+- '4'
 libevent:
 - 2.0.22
 macos_machine:
@@ -17,7 +21,7 @@ macos_machine:
 macos_min_version:
 - '10.9'
 openssl:
-- 1.0.2
+- 1.1.1a
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
