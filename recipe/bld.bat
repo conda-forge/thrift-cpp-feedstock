@@ -17,6 +17,9 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 cd %SRC_DIR%\build
 
+set "CXX=cl.exe"
+set "CC=cl.exe"
+
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
