@@ -13,6 +13,8 @@ export M4="$(which m4)"
 
 pushd "$SRC_DIR"
 
+mkdir cmake-build
+pushd cmake-build
 cmake \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DBUILD_PYTHON=off \
@@ -20,7 +22,8 @@ cmake \
     -DBUILD_C_GLIB=off \
     -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
     -DBUILD_TESTING=off \
-    .
+    -DBoost_INCLUDE_DIRS=${PREFIX}/include \
+    ..
 
 make VERBOSE=1
 
