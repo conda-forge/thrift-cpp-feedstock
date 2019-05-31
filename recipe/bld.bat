@@ -30,6 +30,8 @@ cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
                              -DBUILD_PYTHON=OFF ^
                              -DBUILD_JAVA=OFF ^
                              -DBUILD_C_GLIB=OFF ^
+                             -DBOOST_ROOT=%LIBRARY_PREFIX% ^
+                             -DBoost_INCLUDE_DIRS=%LIBRARY_PREFIX%\include ^
                              -DWITH_SHARED_LIB=OFF ^
                              "%SRC_DIR%"
 
