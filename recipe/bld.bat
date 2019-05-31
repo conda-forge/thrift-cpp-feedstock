@@ -34,6 +34,8 @@ cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release ^
                              -DBOOST_ROOT=%LIBRARY_PREFIX% ^
                              -DBoost_INCLUDE_DIRS=%LIBRARY_PREFIX%\include ^
                              -DWITH_SHARED_LIB=OFF ^
+                             -DBoost_DEBUG=ON ^
+                             -DBoost_NO_BOOST_CMAKE=ON ^
                              "%SRC_DIR%"
 
 cmake --build . --target install --config Release
