@@ -15,7 +15,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '4'
 libevent:
-- 2.0.22
+- 2.1.10
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
