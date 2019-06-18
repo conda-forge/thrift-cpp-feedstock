@@ -21,7 +21,7 @@ source:
   {% endif %}
 
 build:
-  number: 1003
+  number: 1004
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
