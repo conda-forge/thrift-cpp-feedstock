@@ -11,8 +11,8 @@ source:
     sha256: 7ad348b88033af46ce49148097afe354d513c1fca7c607b59c33ebb6064b5179
     patches:
       # - unix_workaround-for-boost-1.63.0.patch  # [unix]
-      - realloc-xcode.patch  # [osx]
-      - 0001-disable-qt5.patch
+      # - realloc-xcode.patch  # [osx]
+      # - 0001-disable-qt5.patch
   {% if win %}
   - url: https://github.com/lexxmark/winflexbison/releases/download/v.{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
     folder: thirdparty\dist\winflexbison
@@ -50,7 +50,7 @@ requirements:
 test:
   commands:
     - test -f $PREFIX/bin/thrift                                        # [unix]
-    - test -f $PREFIX/lib/libthrift.a                                   # [unix]
+    - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
     - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
     - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1            # [win]
