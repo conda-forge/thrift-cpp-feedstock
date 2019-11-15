@@ -19,7 +19,7 @@ cd %SRC_DIR%\build
 
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
-cmake -G "NMake Makefiles" ^
+cmake -G "Ninja" ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
       -DOpenSSL_ROOT="%LIBRARY_PREFIX%" ^
