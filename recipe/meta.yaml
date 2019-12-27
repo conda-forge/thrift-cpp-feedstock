@@ -10,7 +10,7 @@ source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
     sha256: 7ad348b88033af46ce49148097afe354d513c1fca7c607b59c33ebb6064b5179
   {% if win %}
-  - url: https://github.com/lexxmark/winflexbison/releases/download/v.{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
+  - url: https://github.com/lexxmark/winflexbison/releases/download/v{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
     folder: thirdparty\dist\winflexbison
   - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-rc.zip
     folder: thirdparty\src\libevent
