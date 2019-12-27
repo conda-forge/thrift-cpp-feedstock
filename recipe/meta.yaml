@@ -57,7 +57,8 @@ about:
   home: http://thrift.apache.org
   license: Apache 2.0
   license_file: LICENSE
-  summary: 'Compiler and C++ libraries and headers for the Apache Thrift RPC system'
+  summary: >-
+    Compiler and C++ libraries and headers for the Apache Thrift RPC system
 
 extra:
   recipe-maintainers:
