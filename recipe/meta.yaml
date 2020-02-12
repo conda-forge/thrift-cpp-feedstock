@@ -1,6 +1,6 @@
 {% set version = "0.13.0" %}
 {% set WIN_FLEX_BIZON_VERSION = "2.5.20" %}
-{% set LIBEVENT_VERSION = "2.1.7" %}
+{% set LIBEVENT_VERSION = "2.1.8" %}
 
 package:
   name: thrift-cpp
@@ -9,10 +9,12 @@ package:
 source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
     sha256: 7ad348b88033af46ce49148097afe354d513c1fca7c607b59c33ebb6064b5179
+    patches:
+      - thrift-0.13.0-windows-fixes.patch  # [win]
   {% if win %}
   - url: https://github.com/lexxmark/winflexbison/releases/download/v{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
     folder: thirdparty\dist\winflexbison
-  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-rc.zip
+  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-stable.zip
     folder: thirdparty\src\libevent
   {% endif %}
 
@@ -34,6 +36,7 @@ requirements:
     - pkg-config      # [unix]
     - make            # [unix]
     - ninja           # [win]
+    - m2-patch        # [win]
   host:
     - boost-cpp
     - libevent        # [unix]

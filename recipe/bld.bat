@@ -17,6 +17,9 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 cd %SRC_DIR%\build
 
+:: make thrift/windows/config.h available for the compiler:
+SET CL=/I"%SRC_DIR%\lib\cpp\src"
+
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
 cmake -G "NMake Makefiles" ^
