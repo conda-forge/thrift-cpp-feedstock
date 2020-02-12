@@ -40,6 +40,10 @@ cmake -G "NMake Makefiles" ^
       -DWITH_SHARED_LIB=OFF ^
       -DBoost_DEBUG=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
+      -DBUILD_TESTING=OFF ^
       "%SRC_DIR%"
 
 cmake --build . --target install --config Release
+
+:: To run unittests, set -DBUILD_TESTING=ON in the above and uncomment the following line:
+:: cmake --build . --target check --config Release
