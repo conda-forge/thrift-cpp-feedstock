@@ -17,6 +17,9 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 cd %SRC_DIR%\build
 
+:: make thrift/windows/config.h available for the compiler:
+SET CL=/I"%SRC_DIR%\lib\cpp\src"
+
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
 cmake -G "NMake Makefiles" ^
@@ -37,6 +40,10 @@ cmake -G "NMake Makefiles" ^
       -DWITH_SHARED_LIB=OFF ^
       -DBoost_DEBUG=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
+      -DBUILD_TESTING=OFF ^
       "%SRC_DIR%"
 
 cmake --build . --target install --config Release
+
+:: To run unittests, set -DBUILD_TESTING=ON in the above and uncomment the following line:
+:: cmake --build . --target check --config Release
