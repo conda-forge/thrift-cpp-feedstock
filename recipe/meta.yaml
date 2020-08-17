@@ -45,7 +45,7 @@ requirements:
     - openssl
     - zlib
   run:
-  run_constrainted:
+  run_constrained:
     # Ensure only compatible boost versions are installed alongside.
     - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
 
@@ -60,7 +60,7 @@ test:
 
 about:
   home: http://thrift.apache.org
-  license: Apache 2.0
+  license: Apache-2.0
   license_file: LICENSE
   summary: >-
     Compiler and C++ libraries and headers for the Apache Thrift RPC system
