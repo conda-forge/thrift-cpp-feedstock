@@ -37,7 +37,7 @@ requirements:
     - m4              # [unix]
     - pkg-config      # [unix]
     - make            # [unix]
-    - ninja           # [win]
+    - ninja
     - m2-patch        # [win]
   host:
     - boost-cpp

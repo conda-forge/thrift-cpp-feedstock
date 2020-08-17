@@ -17,17 +17,14 @@ mkdir cmake-build
 pushd cmake-build
 cmake \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
-    -DBUILD_PYTHON=off \
-    -DBUILD_JAVA=off \
-    -DBUILD_C_GLIB=off \
+    -DBUILD_PYTHON=OFF \
+    -DBUILD_HASKELL=OFF \
+    -DBUILD_JAVA=OFF \
+    -DBUILD_C_GLIB=OFF \
     -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
-    -DBUILD_TESTING=off \
+    -DBUILD_TESTING=OFF \
     -DBoost_INCLUDE_DIRS=${PREFIX}/include \
+    -GNinja \
     ..
 
-make VERBOSE=1
-
-# TODO(wesm): The unit tests do not run in CircleCI at the moment
-# make check
-
-make install
+ninja install
