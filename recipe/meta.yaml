@@ -19,8 +19,10 @@ source:
   {% endif %}
 
 build:
-  number: 2
-  skip: true  # [win and vc<14]
+  number: 3
+  ignore_run_exports:
+    # Only uses headers, no libs.
+    - boost-cpp
   run_exports:
     - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
 
@@ -35,7 +37,7 @@ requirements:
     - m4              # [unix]
     - pkg-config      # [unix]
     - make            # [unix]
-    - ninja           # [win]
+    - ninja
     - m2-patch        # [win]
   host:
     - boost-cpp
@@ -43,9 +45,9 @@ requirements:
     - openssl
     - zlib
   run:
-    - openssl
-    - zlib
-    - boost-cpp
+  run_constrained:
+    # Ensure only compatible boost versions are installed alongside.
+    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
 
 test:
   commands:
@@ -58,7 +60,7 @@ test:
 
 about:
   home: http://thrift.apache.org
-  license: Apache 2.0
+  license: Apache-2.0
   license_file: LICENSE
   summary: >-
     Compiler and C++ libraries and headers for the Apache Thrift RPC system
