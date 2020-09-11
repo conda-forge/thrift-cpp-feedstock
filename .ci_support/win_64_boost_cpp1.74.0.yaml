@@ -1,33 +1,23 @@
 boost_cpp:
-- '1.72'
+- 1.74.0
 c_compiler:
-- gcc
-c_compiler_version:
-- '8'
+- vs2017
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- gxx
-cxx_compiler_version:
-- '8'
-docker_image:
-- condaforge/linux-anvil-ppc64le
-libevent:
-- 2.1.10
+- vs2017
 openssl:
 - 1.1.1
 pin_run_as_build:
   boost-cpp:
-    max_pin: x.x.x
-  libevent:
     max_pin: x.x.x
   openssl:
     max_pin: x.x.x
   zlib:
     max_pin: x.x
 target_platform:
-- linux-ppc64le
+- win-64
 zlib:
 - '1.2'

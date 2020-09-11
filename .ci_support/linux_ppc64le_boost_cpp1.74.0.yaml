@@ -1,25 +1,19 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 boost_cpp:
-- '1.72'
+- 1.74.0
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
-cdt_arch:
-- aarch64
-cdt_name:
-- cos7
+- '8'
 channel_sources:
-- conda-forge
+- conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '8'
 docker_image:
-- condaforge/linux-anvil-aarch64
+- condaforge/linux-anvil-ppc64le
 libevent:
 - 2.1.10
 openssl:
@@ -34,6 +28,6 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 zlib:
 - '1.2'
