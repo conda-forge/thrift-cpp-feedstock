@@ -19,7 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 3
+  number: 4
   ignore_run_exports:
     # Only uses headers, no libs.
     - boost-cpp
