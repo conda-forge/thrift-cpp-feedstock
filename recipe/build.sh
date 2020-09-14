@@ -1,23 +1,36 @@
 #!/bin/env bash
 
+set -e
+set -x
+
 BOOST_ROOT=$PREFIX
 ZLIB_ROOT=$PREFIX
 LIBEVENT_ROOT=$PREFIX
 
 export OPENSSL_ROOT=$PREFIX
 export OPENSSL_ROOT_DIR=$PREFIX
+export M4="$(which m4)"
 
+pushd "$SRC_DIR"
+
+mkdir cmake-build
+pushd cmake-build
 cmake \
-	-DCMAKE_INSTALL_PREFIX=$PREFIX \
-	-DBUILD_PYTHON=off \
-	-DBUILD_JAVA=off \
-	-DBUILD_C_GLIB=off \
-  -DBUILD_TESTING=off \
-	.
+    -DCMAKE_INSTALL_PREFIX=$PREFIX \
+    -DBUILD_PYTHON=OFF \
+    -DBUILD_HASKELL=OFF \
+    -DBUILD_JAVA=OFF \
+    -DBUILD_C_GLIB=OFF \
+    -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
+    -DBUILD_TESTING=OFF \
+    -DBoost_INCLUDE_DIRS=${PREFIX}/include \
+    -GNinja \
+    ..
 
-make
-
-# TODO(wesm): The unit tests do not run in CircleCI at the moment
-# make check
-
-make install
+# Decrease parallelism a bit as we will otherwise get out-of-memory problems
+# This is only necessary on Travis
+if [ "$(uname -m)" = "ppc64le" ]; then
+    ninja install -j1
+else
+    ninja install
+fi

@@ -1,6 +1,6 @@
-{% set version = "0.11.0" %}
-{% set WIN_FLEX_BIZON_VERSION = "2.4.9" %}
-{% set LIBEVENT_VERSION = "2.1.7" %}
+{% set version = "0.13.0" %}
+{% set WIN_FLEX_BIZON_VERSION = "2.5.20" %}
+{% set LIBEVENT_VERSION = "2.1.8" %}
 
 package:
   name: thrift-cpp
@@ -8,21 +8,23 @@ package:
 
 source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
-    sha256: c4ad38b6cb4a3498310d405a91fef37b9a8e79a50cd0968148ee2524d2fa60c2
+    sha256: 7ad348b88033af46ce49148097afe354d513c1fca7c607b59c33ebb6064b5179
     patches:
-      - unix_workaround-for-boost-1.63.0.patch  # [unix]
-      - realloc-xcode.patch  # [osx]
-      - 0001-disable-qt5.patch
+      - thrift-0.13.0-windows-fixes.patch  # [win]
   {% if win %}
-  - url: https://github.com/lexxmark/winflexbison/releases/download/v.{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
+  - url: https://github.com/lexxmark/winflexbison/releases/download/v{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
     folder: thirdparty\dist\winflexbison
-  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-rc.zip
+  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-stable.zip
     folder: thirdparty\src\libevent
   {% endif %}
 
 build:
   number: 3
-  skip: true  # [win and vc<14]
+  ignore_run_exports:
+    # Only uses headers, no libs.
+    - boost-cpp
+    - zlib    # [win]
+    - openssl # [win]
   run_exports:
     - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
 
@@ -30,8 +32,6 @@ requirements:
   build:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    # - autoconf        # [unix]
-    # - automake        # [unix]
     - bison           # [unix]
     - cmake
     - flex            # [unix]
@@ -39,16 +39,22 @@ requirements:
     - m4              # [unix]
     - pkg-config      # [unix]
     - make            # [unix]
+    - ninja
+    - m2-patch        # [win]
   host:
-    - libboost        {{ boost }}
+    - boost-cpp
     - libevent        # [unix]
     - openssl
     - zlib
+  run:
+  run_constrained:
+    # Ensure only compatible boost versions are installed alongside.
+    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
 
 test:
   commands:
     - test -f $PREFIX/bin/thrift                                        # [unix]
-    - test -f $PREFIX/lib/libthrift.a                                   # [unix]
+    - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
     - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
     - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1            # [win]
@@ -56,8 +62,10 @@ test:
 
 about:
   home: http://thrift.apache.org
-  license: Apache 2.0
-  summary: 'Compiler and C++ libraries and headers for the Apache Thrift RPC system'
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: >-
+    Compiler and C++ libraries and headers for the Apache Thrift RPC system
 
 extra:
   recipe-maintainers:
