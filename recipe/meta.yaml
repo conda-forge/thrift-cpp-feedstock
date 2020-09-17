@@ -28,6 +28,7 @@ build:
 
 requirements:
   build:
+    - libtool  # [unix]
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - bison           # [unix]
