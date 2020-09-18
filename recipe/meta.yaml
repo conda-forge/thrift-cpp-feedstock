@@ -19,10 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 4
-  ignore_run_exports:
-    # Only uses headers, no libs.
-    - boost-cpp
+  number: 5
   run_exports:
     - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
 
@@ -45,9 +42,6 @@ requirements:
     - openssl
     - zlib
   run:
-  run_constrained:
-    # Ensure only compatible boost versions are installed alongside.
-    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
 
 test:
   commands:
