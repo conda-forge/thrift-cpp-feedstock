@@ -22,7 +22,7 @@ SET CL=/I"%SRC_DIR%\lib\cpp\src"
 
 :: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
 
-cmake -G "NMake Makefiles" ^
+cmake -GNinja ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
       -DOpenSSL_ROOT="%LIBRARY_PREFIX%" ^
@@ -42,8 +42,7 @@ cmake -G "NMake Makefiles" ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       -DBUILD_TESTING=OFF ^
       "%SRC_DIR%"
+if errorlevel 1 exit 1
 
-cmake --build . --target install --config Release
-
-:: To run unittests, set -DBUILD_TESTING=ON in the above and uncomment the following line:
-:: cmake --build . --target check --config Release
+ninja
+if errorlevel 1 exit 1

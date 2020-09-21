@@ -30,7 +30,7 @@ cmake \
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
 if [ "$(uname -m)" = "ppc64le" ]; then
-    ninja install -j1
+    ninja -j1
 else
-    ninja install
+    ninja
 fi
