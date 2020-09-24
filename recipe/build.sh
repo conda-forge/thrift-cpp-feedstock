@@ -1,4 +1,6 @@
 #!/bin/env bash
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 set -e
 set -x
@@ -15,7 +17,7 @@ pushd "$SRC_DIR"
 
 mkdir cmake-build
 pushd cmake-build
-cmake \
+cmake ${CMAKE_ARGS} \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DBUILD_PYTHON=OFF \
     -DBUILD_HASKELL=OFF \
