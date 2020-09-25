@@ -30,6 +30,10 @@ cmake ${CMAKE_ARGS} \
     -GNinja \
     ..
 
+# Be explicit about tutorials being unwanted.
+# Somehow this gets overriden on first run.
+cmake -DBUILD_TUTORIALS=OFF .
+
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
 if [ "$(uname -m)" = "ppc64le" ]; then
