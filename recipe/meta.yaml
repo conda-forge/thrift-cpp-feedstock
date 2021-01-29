@@ -3,7 +3,7 @@
 {% set LIBEVENT_VERSION = "2.1.8" %}
 
 package:
-  name: thrift-cpp
+  name: thrift-split
   version: {{ version }}
 
 source:
@@ -19,17 +19,13 @@ source:
   {% endif %}
 
 build:
-  number: 3
-  ignore_run_exports:
-    # Only uses headers, no libs.
-    - boost-cpp
-    - zlib    # [win]
-    - openssl # [win]
+  number: 6
   run_exports:
-    - {{ pin_subpackage("thrift-cpp", max_pin="x.x") }}
+    - {{ pin_subpackage("libthrift", max_pin="x.x") }}
 
 requirements:
   build:
+    - libtool  # [unix]
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - bison           # [unix]
@@ -47,18 +43,82 @@ requirements:
     - openssl
     - zlib
   run:
-  run_constrained:
-    # Ensure only compatible boost versions are installed alongside.
-    - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
 
-test:
-  commands:
-    - test -f $PREFIX/bin/thrift                                        # [unix]
-    - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
-    - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
-    - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1            # [win]
-    - if not exist %PREFIX%\\Library\\lib\\thriftmd.lib exit 1          # [win]
+outputs:
+  - name: libthrift
+    script: install.sh  # [unix]
+    script: install.bat  # [not unix]
+    build:
+      run_exports:
+        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+    requirements:
+      build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - bison           # [unix]
+        - cmake
+        - flex            # [unix]
+        - libtool         # [unix]
+        - m4              # [unix]
+        - pkg-config      # [unix]
+        - make            # [unix]
+        - ninja
+        - m2-patch        # [win]
+      host:
+        - boost-cpp
+        - libevent        # [unix]
+        - openssl
+        - zlib
+    test:
+      commands:
+        - test ! -f $PREFIX/bin/thrift                                      # [unix]
+        - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
+        - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
+        - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\thrift.exe exit 1                # [win]
+        - if not exist %PREFIX%\\Library\\lib\\thriftmd.lib exit 1          # [win]
+  - name: thrift-compiler
+    script: install.sh  # [unix]
+    script: install.bat  # [not unix]
+    build:
+      run_exports:
+        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+    requirements:
+      build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - bison           # [unix]
+        - cmake
+        - flex            # [unix]
+        - libtool         # [unix]
+        - m4              # [unix]
+        - pkg-config      # [unix]
+        - make            # [unix]
+        - ninja
+        - m2-patch        # [win]
+      host:
+        - {{ pin_subpackage("libthrift", exact=true) }}
+        - boost-cpp
+        - libevent        # [unix]
+        - openssl
+        - zlib
+      run:
+        - {{ pin_subpackage("libthrift", exact=true) }}
+    test:
+      commands:
+        - test -f $PREFIX/bin/thrift                              # [unix]
+        - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1  # [win]
+  - name: thrift-cpp
+    build:
+      run_exports:
+        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+    requirements:
+      host:
+        - {{ pin_subpackage("libthrift", exact=true) }}
+        - {{ pin_subpackage("thrift-compiler", exact=true) }}
+      run:
+        - {{ pin_subpackage("libthrift", exact=true) }}
+        - {{ pin_subpackage("thrift-compiler", exact=true) }}
 
 about:
   home: http://thrift.apache.org
