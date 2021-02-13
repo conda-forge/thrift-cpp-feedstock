@@ -72,6 +72,7 @@ outputs:
     test:
       commands:
         - test ! -f $PREFIX/bin/thrift                                      # [unix]
+        - test ! -f $PREFIX/lib/libthrift.a                                 # [unix]
         - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
         - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
         - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
