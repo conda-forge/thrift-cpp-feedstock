@@ -33,6 +33,8 @@ cmake -GNinja ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DBUILD_PYTHON=OFF ^
       -DBUILD_JAVA=OFF ^
+      -DBUILD_JAVASCRIPT=OFF ^
+      -DBUILD_NODEJS=OFF ^
       -DBUILD_C_GLIB=OFF ^
       -DBoost_ADDITIONAL_VERSIONS="1.70.0" ^
       -DBOOST_ROOT=%LIBRARY_PREFIX% ^
@@ -41,6 +43,7 @@ cmake -GNinja ^
       -DBoost_DEBUG=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       -DBUILD_TESTING=OFF ^
+      -DBUILD_SHARED_LIBS=ON ^
       "%SRC_DIR%"
 if errorlevel 1 exit 1
 
