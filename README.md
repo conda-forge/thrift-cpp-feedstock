@@ -99,6 +99,7 @@ Installing `thrift-split` from the `conda-forge` channel can be achieved by addi
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `libthrift, thrift-compiler, thrift-cpp` can be installed with:
