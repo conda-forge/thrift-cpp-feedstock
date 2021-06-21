@@ -19,7 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
 
