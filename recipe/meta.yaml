@@ -50,7 +50,7 @@ outputs:
     script: install.bat  # [not unix]
     build:
       run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
     requirements:
       build:
         - {{ compiler("c") }}
@@ -83,7 +83,7 @@ outputs:
     script: install.bat  # [not unix]
     build:
       run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
     requirements:
       build:
         - {{ compiler("c") }}
@@ -112,7 +112,7 @@ outputs:
   - name: thrift-cpp
     build:
       run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x") }}
+        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
     requirements:
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
