@@ -13,14 +13,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>Drone</td>
-    <td>
-      <a href="https://cloud.drone.io/conda-forge/thrift-cpp-feedstock">
-        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/thrift-cpp-feedstock/master.svg?label=Linux">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
@@ -99,6 +92,7 @@ Installing `thrift-split` from the `conda-forge` channel can be achieved by addi
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `libthrift, thrift-compiler, thrift-cpp` can be installed with:
