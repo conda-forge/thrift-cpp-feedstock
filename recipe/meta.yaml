@@ -1,4 +1,4 @@
-{% set version = "0.13.0" %}
+{% set version = "0.15.0" %}
 {% set WIN_FLEX_BIZON_VERSION = "2.5.20" %}
 {% set LIBEVENT_VERSION = "2.1.8" %}
 
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
-    sha256: 7ad348b88033af46ce49148097afe354d513c1fca7c607b59c33ebb6064b5179
+    sha256: d5883566d161f8f6ddd4e21f3a9e3e6b8272799d054820f1c25b11e86718f86b
     patches:
       - thrift-0.13.0-windows-fixes.patch  # [win]
   {% if win %}
@@ -19,7 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 6
+  number: 0
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x") }}
   ignore_run_exports:
@@ -45,7 +45,6 @@ requirements:
     - libevent        # [unix]
     - openssl
     - zlib
-  run:
 
 outputs:
   - name: libthrift
@@ -75,6 +74,9 @@ outputs:
         - libevent        # [unix]
         - openssl
         - zlib
+      run:
+        - openssl
+        - zlib
     test:
       commands:
         - test ! -f $PREFIX/bin/thrift                                      # [unix]
@@ -92,6 +94,8 @@ outputs:
       ignore_run_exports:
         - zlib
         - openssl
+        - libevent  # [unix]
+        - libthrift
     requirements:
       build:
         - {{ compiler("c") }}
