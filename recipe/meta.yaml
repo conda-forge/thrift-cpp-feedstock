@@ -19,7 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
 
@@ -117,6 +117,8 @@ outputs:
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - {{ pin_subpackage("thrift-compiler", exact=true) }}
+        # Needed to build for the openssl variants
+        - openssl
       run:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - {{ pin_subpackage("thrift-compiler", exact=true) }}
