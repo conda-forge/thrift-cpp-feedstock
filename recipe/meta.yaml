@@ -1,4 +1,4 @@
-{% set version = "0.16.0" %}
+{% set version = "0.18.0" %}
 {% set WIN_FLEX_BIZON_VERSION = "2.5.20" %}
 {% set LIBEVENT_VERSION = "2.1.8" %}
 
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
-    sha256: f460b5c1ca30d8918ff95ea3eb6291b3951cf518553566088f3f2be8981f6209
+    sha256: 7c19389cb7910a20e58b8e46903c8c1a36353008f9fcc1b03f748accf9b5f3e1
     patches:
       - thrift-0.13.0-windows-fixes.patch  # [win]
   {% if win %}
@@ -19,7 +19,7 @@ source:
   {% endif %}
 
 build:
-  number: 2
+  number: 0
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
 
