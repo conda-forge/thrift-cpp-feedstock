@@ -1,5 +1,5 @@
 cd %SRC_DIR%\build
-ninja install
+cmake --install .
 if errorlevel 1 exit 1
 
 if [%PKG_NAME%] == [libthrift] (

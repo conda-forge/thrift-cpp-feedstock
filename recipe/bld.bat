@@ -47,5 +47,5 @@ cmake -GNinja ^
       "%SRC_DIR%"
 if errorlevel 1 exit 1
 
-ninja
+cmake --build .
 if errorlevel 1 exit 1

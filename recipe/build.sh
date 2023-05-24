@@ -28,10 +28,4 @@ cmake -G Ninja \
     -DBoost_INCLUDE_DIRS=${PREFIX}/include \
     ..
 
-# Decrease parallelism a bit as we will otherwise get out-of-memory problems
-# This is only necessary on Travis
-if [ "$(uname -m)" = "ppc64le" ]; then
-    ninja -j1
-else
-    ninja
-fi
+cmake --build .

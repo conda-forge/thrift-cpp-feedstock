@@ -2,7 +2,7 @@
 set -ex
 
 cd cmake-build
-ninja install
+cmake --install .
 
 if [[ "$PKG_NAME" == libthrift ]]; then
     rm $PREFIX/bin/thrift
