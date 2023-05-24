@@ -45,7 +45,7 @@ cmake -GNinja ^
       -DBUILD_TESTING=OFF ^
       -DBUILD_SHARED_LIBS=ON ^
       "%SRC_DIR%"
-if errorlevel 1 exit 1
+if %ERRORLEVEL% neq 0 exit 1
 
 cmake --build .
-if errorlevel 1 exit 1
+if %ERRORLEVEL% neq 0 exit 1
