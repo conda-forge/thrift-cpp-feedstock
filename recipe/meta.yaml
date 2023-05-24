@@ -61,6 +61,14 @@ outputs:
         - openssl
         - zlib
     test:
+      requires:
+        # cmake needs compiler to be able to run package detection, see
+        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+        - {{ compiler('cxx') }}
+        - cmake
+        - ninja
+      files:
+        - cmake_test/
       commands:
         # presence of shared libs
         - test -f $PREFIX/lib/libthrift.so                      # [linux]
@@ -78,6 +86,11 @@ outputs:
         # presence of headers
         - test -f $PREFIX/include/thrift/Thrift.h               # [unix]
         - if not exist %LIBRARY_INC%\thrift\Thrift.h exit 1     # [win]
+
+        # test CMake integration, i.e. find_package(thrift)
+        - cd cmake_test
+        - cmake -GNinja $CMAKE_ARGS .   # [unix]
+        - cmake -GNinja %CMAKE_ARGS% .  # [win]
 
   - name: thrift-compiler
     script: install.sh   # [unix]
