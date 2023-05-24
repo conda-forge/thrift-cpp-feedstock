@@ -119,8 +119,6 @@ outputs:
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - {{ pin_subpackage("thrift-compiler", exact=true) }}
-        # Needed to build for the openssl variants
-        - openssl
       run:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - {{ pin_subpackage("thrift-compiler", exact=true) }}
