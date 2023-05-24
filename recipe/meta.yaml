@@ -62,13 +62,22 @@ outputs:
         - zlib
     test:
       commands:
-        - test ! -f $PREFIX/bin/thrift                                      # [unix]
-        - test ! -f $PREFIX/lib/libthrift.a                                 # [unix]
-        - test -f $PREFIX/lib/libthrift${SHLIB_EXT}                         # [unix]
-        - test -f $PREFIX/include/thrift/Thrift.h                           # [unix]
-        - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
-        - if exist %PREFIX%\\Library\\bin\\thrift.exe exit 1                # [win]
-        - if not exist %PREFIX%\\Library\\lib\\thriftmd.lib exit 1          # [win]
+        # presence of shared libs
+        - test -f $PREFIX/lib/libthrift.so                      # [linux]
+        - test -f $PREFIX/lib/libthrift.dylib                   # [osx]
+        - if not exist %LIBRARY_BIN%\thriftmd.dll exit 1        # [win]
+        - if not exist %LIBRARY_LIB%\thriftmd.lib exit 1        # [win]
+
+        # absence of static libs
+        - test ! -f $PREFIX/lib/libthrift.a                     # [unix]
+
+        # absence of binaries
+        - test ! -f $PREFIX/bin/thrift                          # [unix]
+        - if exist %LIBRARY_BIN%\thrift.exe exit 1              # [win]
+
+        # presence of headers
+        - test -f $PREFIX/include/thrift/Thrift.h               # [unix]
+        - if not exist %LIBRARY_INC%\thrift\Thrift.h exit 1     # [win]
 
   - name: thrift-compiler
     script: install.sh   # [unix]
@@ -95,8 +104,9 @@ outputs:
         - {{ pin_subpackage("libthrift", exact=true) }}
     test:
       commands:
-        - test -f $PREFIX/bin/thrift                              # [unix]
-        - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1  # [win]
+        # presence of binaries
+        - test -f $PREFIX/bin/thrift                    # [unix]
+        - if not exist %LIBRARY_BIN%\thrift.exe exit 1  # [win]
 
   - name: thrift-cpp
     build:
