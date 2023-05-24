@@ -17,10 +17,9 @@ set OPENSSL_ROOT_DIR=%PREFIX%
 
 set "CXXFLAGS=%CXXFLAGS% -DNOMINMAX"
 
-cd %SRC_DIR%\build
-
-:: make thrift/windows/config.h available for the compiler:
-SET CL=/I"%SRC_DIR%\lib\cpp\src"
+:: folder "build" exists already
+mkdir cmake-build
+cd cmake-build
 
 cmake -GNinja ^
       -DCMAKE_BUILD_TYPE=Release ^
