@@ -39,7 +39,7 @@ requirements:
     - m2-patch        # [win]
   host:
     - boost-cpp
-    - libevent        # [unix]
+    - libevent
     - openssl
     - zlib
   run:
@@ -66,7 +66,7 @@ outputs:
         - m2-patch        # [win]
       host:
         - boost-cpp
-        - libevent        # [unix]
+        - libevent
         - openssl
         - zlib
     test:
@@ -101,7 +101,7 @@ outputs:
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - boost-cpp
-        - libevent        # [unix]
+        - libevent
         - openssl
         - zlib
       run:

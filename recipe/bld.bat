@@ -29,7 +29,7 @@ cmake -GNinja ^
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
       -DOpenSSL_ROOT="%LIBRARY_PREFIX%" ^
       -DOPENSSL_ROOT_DIR="%LIBRARY_PREFIX%" ^
-      -DLIBEVENT_ROOT="%SRC_DIR%\thirdparty\src\libevent" ^
+      -DLIBEVENT_ROOT="%LIBRARY_PREFIX%" ^
       -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
       -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
