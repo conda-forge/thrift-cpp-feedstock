@@ -25,18 +25,13 @@ build:
 
 requirements:
   build:
-    - libtool  # [unix]
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - bison           # [unix]
     - cmake
     - flex            # [unix]
-    - libtool         # [unix]
-    - m4              # [unix]
     - pkg-config      # [unix]
-    - make            # [unix]
     - ninja
-    - m2-patch        # [win]
   host:
     - boost-cpp
     - libevent
@@ -58,12 +53,8 @@ outputs:
         - bison           # [unix]
         - cmake
         - flex            # [unix]
-        - libtool         # [unix]
-        - m4              # [unix]
         - pkg-config      # [unix]
-        - make            # [unix]
         - ninja
-        - m2-patch        # [win]
       host:
         - boost-cpp
         - libevent
@@ -92,12 +83,8 @@ outputs:
         - bison           # [unix]
         - cmake
         - flex            # [unix]
-        - libtool         # [unix]
-        - m4              # [unix]
         - pkg-config      # [unix]
-        - make            # [unix]
         - ninja
-        - m2-patch        # [win]
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - boost-cpp
