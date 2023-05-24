@@ -22,8 +22,6 @@ cd %SRC_DIR%\build
 :: make thrift/windows/config.h available for the compiler:
 SET CL=/I"%SRC_DIR%\lib\cpp\src"
 
-:: WITH_SHARED_LIB must be off - the cmake config doesn't support shared libs yet
-
 cmake -GNinja ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW ^
@@ -42,7 +40,6 @@ cmake -GNinja ^
       -DBoost_ADDITIONAL_VERSIONS="1.70.0" ^
       -DBOOST_ROOT=%LIBRARY_PREFIX% ^
       -DBoost_INCLUDE_DIRS=%LIBRARY_PREFIX%\include ^
-      -DWITH_SHARED_LIB=OFF ^
       -DBoost_DEBUG=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       -DBUILD_TESTING=OFF ^
