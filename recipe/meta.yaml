@@ -46,8 +46,8 @@ requirements:
 
 outputs:
   - name: libthrift
-    script: install.sh  # [unix]
-    script: install.bat  # [not unix]
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
@@ -78,9 +78,10 @@ outputs:
         - if not exist %PREFIX%\\Library\\include\\thrift\\Thrift.h exit 1  # [win]
         - if exist %PREFIX%\\Library\\bin\\thrift.exe exit 1                # [win]
         - if not exist %PREFIX%\\Library\\lib\\thriftmd.lib exit 1          # [win]
+
   - name: thrift-compiler
-    script: install.sh  # [unix]
-    script: install.bat  # [not unix]
+    script: install.sh   # [unix]
+    script: install.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
@@ -109,6 +110,7 @@ outputs:
       commands:
         - test -f $PREFIX/bin/thrift                              # [unix]
         - if not exist %PREFIX%\\Library\\bin\\thrift.exe exit 1  # [win]
+
   - name: thrift-cpp
     build:
       run_exports:
@@ -122,6 +124,9 @@ outputs:
       run:
         - {{ pin_subpackage("libthrift", exact=true) }}
         - {{ pin_subpackage("thrift-compiler", exact=true) }}
+    test:
+      commands:
+        - echo "tested in other outputs"
 
 about:
   home: http://thrift.apache.org
@@ -129,6 +134,7 @@ about:
   license_file: LICENSE
   summary: >-
     Compiler and C++ libraries and headers for the Apache Thrift RPC system
+  dev_url: https://github.com/apache/thrift
 
 extra:
   recipe-maintainers:
@@ -136,3 +142,4 @@ extra:
     - msarahan
     - jakirkham
     - xhochy
+  feedstock-name: thrift-cpp
