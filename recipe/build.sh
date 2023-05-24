@@ -22,15 +22,11 @@ cmake -G Ninja \
     -DBUILD_JAVASCRIPT=OFF \
     -DBUILD_NODEJS=OFF \
     -DBUILD_C_GLIB=OFF \
-    -DBUILD_TUTORIALS=OFF \
+    -DBUILD_TUTORIALS=OFF \
     -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
     -DBUILD_TESTING=OFF \
     -DBoost_INCLUDE_DIRS=${PREFIX}/include \
     ..
-
-# Be explicit about tutorials being unwanted.
-# Somehow this gets overriden on first run.
-cmake -DBUILD_TUTORIALS=OFF .
 
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
