@@ -10,7 +10,7 @@ source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
     sha256: 04c6f10e5d788ca78e13ee2ef0d2152c7b070c0af55483d6b942e29cff296726
     patches:
-      - thrift-0.13.0-windows-fixes.patch  # [win]
+      - patches/0001-windows-fixes.patch  # [win]
   {% if win %}
   - url: https://github.com/lexxmark/winflexbison/releases/download/v{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
     folder: thirdparty\dist\winflexbison

@@ -1,0 +1,71 @@
+From 8af7173360e4fcf1dc267fe6abde6279fed12489 Mon Sep 17 00:00:00 2001
+From: Pearu Peterson <pearu.peterson@gmail.com>
+Date: Wed, 12 Feb 2020 13:50:35 -0800
+Subject: [PATCH] windows fixes
+
+Co-Authored-By: H. Vetinari <h.vetinari@gmx.com>
+---
+ compiler/cpp/src/thrift/generate/t_py_generator.cc | 7 +++++++
+ compiler/cpp/src/thrift/main.cc                    | 1 +
+ compiler/cpp/src/thrift/thriftl.ll                 | 1 +
+ compiler/cpp/src/thrift/thrifty.yy                 | 4 ----
+ 4 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/compiler/cpp/src/thrift/generate/t_py_generator.cc b/compiler/cpp/src/thrift/generate/t_py_generator.cc
+index 857cb77..6108a27 100644
+--- a/compiler/cpp/src/thrift/generate/t_py_generator.cc
++++ b/compiler/cpp/src/thrift/generate/t_py_generator.cc
+@@ -33,6 +33,13 @@
+ #include "thrift/version.h"
+ #include "thrift/generate/t_generator.h"
+ 
++// remove MSVC-specific interface keyword that clashes with use in this file
++#ifdef _MSC_VER
++#ifdef interface
++#undef interface
++#endif
++#endif
++
+ using std::map;
+ using std::ostream;
+ using std::ostringstream;
+diff --git a/compiler/cpp/src/thrift/main.cc b/compiler/cpp/src/thrift/main.cc
+index 485ec00..63a2581 100644
+--- a/compiler/cpp/src/thrift/main.cc
++++ b/compiler/cpp/src/thrift/main.cc
+@@ -40,6 +40,7 @@
+ #include <limits.h>
+ 
+ #ifdef _WIN32
++#include <WinSock2.h>
+ #include <windows.h> /* for GetFullPathName */
+ #endif
+ 
+diff --git a/compiler/cpp/src/thrift/thriftl.ll b/compiler/cpp/src/thrift/thriftl.ll
+index 45c5926..47f098d 100644
+--- a/compiler/cpp/src/thrift/thriftl.ll
++++ b/compiler/cpp/src/thrift/thriftl.ll
+@@ -59,6 +59,7 @@
+ #include <stdlib.h>
+ 
+ #ifdef _MSC_VER
++#include <io.h>  // isatty
+ #include "thrift/windows/config.h"
+ #endif
+ #include "thrift/main.h"
+diff --git a/compiler/cpp/src/thrift/thrifty.yy b/compiler/cpp/src/thrift/thrifty.yy
+index 2d67c1a..ffaafcf 100644
+--- a/compiler/cpp/src/thrift/thrifty.yy
++++ b/compiler/cpp/src/thrift/thrifty.yy
+@@ -36,11 +36,7 @@
+ #endif
+ #include <stdio.h>
+ #include <string.h>
+-#ifndef _MSC_VER
+ #include <inttypes.h>
+-#else
+-#include <stdint.h>
+-#endif
+ #include <limits.h>
+ #ifdef _MSC_VER
+ #include "thrift/windows/config.h"

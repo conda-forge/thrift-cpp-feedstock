@@ -15,6 +15,8 @@ set ZLIB_ROOT=%PREFIX%
 set OPENSSL_ROOT=%PREFIX%
 set OPENSSL_ROOT_DIR=%PREFIX%
 
+set "CXXFLAGS=%CXXFLAGS% -DNOMINMAX"
+
 cd %SRC_DIR%\build
 
 :: make thrift/windows/config.h available for the compiler:
