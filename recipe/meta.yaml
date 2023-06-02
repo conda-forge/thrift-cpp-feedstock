@@ -1,6 +1,4 @@
 {% set version = "0.18.1" %}
-{% set WIN_FLEX_BIZON_VERSION = "2.5.20" %}
-{% set LIBEVENT_VERSION = "2.1.8" %}
 
 package:
   name: thrift-split
@@ -11,27 +9,25 @@ source:
     sha256: 04c6f10e5d788ca78e13ee2ef0d2152c7b070c0af55483d6b942e29cff296726
     patches:
       - patches/0001-windows-fixes.patch  # [win]
-  {% if win %}
-  - url: https://github.com/lexxmark/winflexbison/releases/download/v{{ WIN_FLEX_BIZON_VERSION }}/win_flex_bison-{{ WIN_FLEX_BIZON_VERSION }}.zip
-    folder: thirdparty\dist\winflexbison
-  - url: https://github.com/nmathewson/Libevent/archive/release-{{ LIBEVENT_VERSION }}-stable.zip
-    folder: thirdparty\src\libevent
-  {% endif %}
 
 build:
   number: 2
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
+  ignore_run_exports_from:
+    # we only need the binaries at build-time
+    - winflexbison
 
 requirements:
   build:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    - bison           # [unix]
     - cmake
-    - flex            # [unix]
-    - pkg-config      # [unix]
     - ninja
+    - pkg-config
+    - bison           # [unix]
+    - flex            # [unix]
+    - winflexbison    # [win]
   host:
     - boost-cpp
     - libevent

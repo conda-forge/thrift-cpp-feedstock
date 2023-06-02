@@ -1,14 +1,4 @@
-pushd thirdparty\src\libevent
-nmake -f Makefile.nmake
-mkdir lib
-move *.lib lib\
-move WIN32-Code\event2\* include\event2\
-move WIN32-Code\nmake\* include\event2\
-move WIN32-Code\nmake\event2\* include\event2\
-move *.h include\
-if errorlevel 1 exit 1
-
-popd
+@echo on
 
 set BOOST_ROOT=%PREFIX%
 set ZLIB_ROOT=%PREFIX%
@@ -29,8 +19,6 @@ cmake -GNinja ^
       -DOpenSSL_ROOT="%LIBRARY_PREFIX%" ^
       -DOPENSSL_ROOT_DIR="%LIBRARY_PREFIX%" ^
       -DLIBEVENT_ROOT="%LIBRARY_PREFIX%" ^
-      -DFLEX_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_flex.exe" ^
-      -DBISON_EXECUTABLE="%SRC_DIR%\thirdparty\dist\winflexbison\win_bison.exe" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DBUILD_PYTHON=OFF ^
       -DBUILD_JAVA=OFF ^
