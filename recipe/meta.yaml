@@ -61,6 +61,8 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
+        # find_package(thrift) really wants to find zlib
+        - zlib  # [win]
       files:
         - cmake_test/
       commands:
