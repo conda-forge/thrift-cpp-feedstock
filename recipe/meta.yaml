@@ -50,10 +50,7 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - bison           # [unix]
         - cmake
-        - flex            # [unix]
-        - pkg-config      # [unix]
         - ninja
       host:
         - boost-cpp
@@ -102,10 +99,7 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - bison           # [unix]
         - cmake
-        - flex            # [unix]
-        - pkg-config      # [unix]
         - ninja
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
