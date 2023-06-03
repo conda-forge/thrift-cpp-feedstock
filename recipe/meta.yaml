@@ -61,6 +61,7 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
+        - pkg-config
         # find_package(thrift) really wants to find zlib
         - zlib  # [win]
       files:
@@ -84,6 +85,11 @@ outputs:
         # presence of headers
         - test -f $PREFIX/include/thrift/Thrift.h               # [unix]
         - if not exist %LIBRARY_INC%\thrift\Thrift.h exit 1     # [win]
+
+        # pkg-config metadata (different naming than DSOs; uses hyphen, no "lib" prefix)
+        {% for each in ["thrift", "thrift-nb", "thrift-z"] %}
+        - pkg-config --print-errors --exact-version "{{ version }}" {{ each }}
+        {% endfor %}
 
         # test CMake integration, i.e. find_package(thrift)
         - cd cmake_test
