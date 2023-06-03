@@ -66,14 +66,16 @@ outputs:
       files:
         - cmake_test/
       commands:
+        {% for each in ["thrift", "thriftnb", "thriftz"] %}
         # presence of shared libs
-        - test -f $PREFIX/lib/libthrift.so                      # [linux]
-        - test -f $PREFIX/lib/libthrift.dylib                   # [osx]
-        - if not exist %LIBRARY_BIN%\thriftmd.dll exit 1        # [win]
-        - if not exist %LIBRARY_LIB%\thriftmd.lib exit 1        # [win]
+        - test -f $PREFIX/lib/lib{{ each }}.so                  # [linux]
+        - test -f $PREFIX/lib/lib{{ each }}.dylib               # [osx]
+        - if not exist %LIBRARY_LIB%\{{ each }}md.lib exit 1    # [win]
+        - if not exist %LIBRARY_BIN%\{{ each }}md.dll exit 1    # [win]
 
         # absence of static libs
-        - test ! -f $PREFIX/lib/libthrift.a                     # [unix]
+        - test ! -f $PREFIX/lib/lib{{ each }}.a                 # [unix]
+        {% endfor %}
 
         # absence of binaries
         - test ! -f $PREFIX/bin/thrift                          # [unix]
