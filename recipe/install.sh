@@ -1,9 +1,8 @@
 #!/bin/bash
+set -ex
 
-set -exo pipefail
-
-pushd cmake-build
-ninja install
+cd cmake-build
+cmake --install .
 
 if [[ "$PKG_NAME" == libthrift ]]; then
     rm $PREFIX/bin/thrift

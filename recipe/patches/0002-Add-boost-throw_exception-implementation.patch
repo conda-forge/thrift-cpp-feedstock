@@ -1,0 +1,32 @@
+From d32c83c87c42cd8c7b22a388afed266818e6eb30 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 2 Jun 2023 22:17:47 +1100
+Subject: [PATCH 2/2] Add boost::throw_exception implementation
+
+Taken from:
+https://github.com/conda-forge/lief-feedstock/blob/8ec0b2b04dbcb44e0df219058ee0868910bd0899/recipe/0004-Add-boost-throw_exception-implementation.patch
+
+Inspired-By: "Uwe L. Korn" <uwe.korn@quantco.com>
+---
+ lib/cpp/src/thrift/transport/TSSLSocket.cpp | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/lib/cpp/src/thrift/transport/TSSLSocket.cpp b/lib/cpp/src/thrift/transport/TSSLSocket.cpp
+index eb96a73..f65fa29 100644
+--- a/lib/cpp/src/thrift/transport/TSSLSocket.cpp
++++ b/lib/cpp/src/thrift/transport/TSSLSocket.cpp
+@@ -1234,3 +1234,14 @@ char uppercase(char c) {
+ }
+ }
+ }
++
++// We need to explicitly define this here as Boost infers from the defines/environment
++// that boost::throw_exception will be user-defined.
++namespace boost
++{
++#ifdef BOOST_NO_EXCEPTIONS
++void throw_exception( std::exception const & e ){
++    throw 11;
++};
++#endif
++}// namespace boost

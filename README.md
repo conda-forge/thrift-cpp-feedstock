@@ -1,5 +1,5 @@
-About thrift-split-feedstock
-============================
+About thrift-cpp-feedstock
+==========================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/thrift-cpp-feedstock/blob/main/LICENSE.txt)
 
@@ -8,6 +8,8 @@ Home: http://thrift.apache.org
 Package license: Apache-2.0
 
 Summary: Compiler and C++ libraries and headers for the Apache Thrift RPC system
+
+Development: https://github.com/apache/thrift
 
 Current build status
 ====================
@@ -85,10 +87,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-thrift--compiler-green.svg)](https://anaconda.org/conda-forge/thrift-compiler) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/thrift-compiler.svg)](https://anaconda.org/conda-forge/thrift-compiler) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/thrift-compiler.svg)](https://anaconda.org/conda-forge/thrift-compiler) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/thrift-compiler.svg)](https://anaconda.org/conda-forge/thrift-compiler) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-thrift--cpp-green.svg)](https://anaconda.org/conda-forge/thrift-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/thrift-cpp.svg)](https://anaconda.org/conda-forge/thrift-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/thrift-cpp.svg)](https://anaconda.org/conda-forge/thrift-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/thrift-cpp.svg)](https://anaconda.org/conda-forge/thrift-cpp) |
 
-Installing thrift-split
-=======================
+Installing thrift-cpp
+=====================
 
-Installing `thrift-split` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `thrift-cpp` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
@@ -174,17 +176,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating thrift-split-feedstock
-===============================
+Updating thrift-cpp-feedstock
+=============================
 
-If you would like to improve the thrift-split recipe or build a new
+If you would like to improve the thrift-cpp recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/thrift-split-feedstock are
+Note that all branches in the conda-forge/thrift-cpp-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.
@@ -199,6 +201,7 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@h-vetinari](https://github.com/h-vetinari/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@msarahan](https://github.com/msarahan/)
 * [@wesm](https://github.com/wesm/)
