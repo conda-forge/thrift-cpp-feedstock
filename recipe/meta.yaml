@@ -63,7 +63,7 @@ outputs:
         - ninja
         - pkg-config
         # find_package(thrift) really wants to find zlib
-        - zlib  # [win]
+        - zlib  # [linux or win]
       files:
         - cmake_test/
       commands:
