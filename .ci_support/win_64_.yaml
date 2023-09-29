@@ -1,5 +1,3 @@
-boost_cpp:
-- 1.78.0
 c_compiler:
 - vs2019
 channel_sources:
@@ -12,9 +10,6 @@ libevent:
 - 2.1.12
 openssl:
 - '3'
-pin_run_as_build:
-  boost-cpp:
-    max_pin: x.x.x
 target_platform:
 - win-64
 zlib:

@@ -1,7 +1,5 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
-boost_cpp:
-- 1.78.0
 c_compiler:
 - gcc
 c_compiler_version:
@@ -24,9 +22,6 @@ libevent:
 - 2.1.12
 openssl:
 - '3'
-pin_run_as_build:
-  boost-cpp:
-    max_pin: x.x.x
 target_platform:
 - linux-aarch64
 zip_keys:
