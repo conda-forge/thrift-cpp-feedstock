@@ -104,16 +104,13 @@ outputs:
         - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
     requirements:
       build:
+        # for strong run-exports
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - cmake
         - ninja
       host:
         - {{ pin_subpackage("libthrift", exact=true) }}
-        - libboost-headers
-        - libevent
-        - openssl
-        - zlib
       run:
         - {{ pin_subpackage("libthrift", exact=true) }}
     test:
