@@ -12,8 +12,6 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '15'
-libboost_devel:
-- '1.82'
 libevent:
 - 2.1.12
 macos_machine:
