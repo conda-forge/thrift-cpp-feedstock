@@ -12,7 +12,7 @@ source:
       - patches/0002-Add-boost-throw_exception-implementation.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
   ignore_run_exports_from:
@@ -22,6 +22,7 @@ build:
 requirements:
   build:
     - {{ compiler("c") }}
+    - {{ stdlib("c") }}
     - {{ compiler("cxx") }}
     - cmake
     - ninja
@@ -46,6 +47,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         - cmake
         - ninja
@@ -106,6 +108,7 @@ outputs:
       build:
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         - cmake
         - ninja
