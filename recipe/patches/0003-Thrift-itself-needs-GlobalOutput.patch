@@ -1,16 +1,25 @@
-From 5757495819e931d7ed567303c9cfbd51e0dfe55b Mon Sep 17 00:00:00 2001
+From 8c32c46ee1663f4f4d828858be680002cff2600d Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Fri, 11 Jul 2025 14:43:05 +0200
 Subject: [PATCH 3/3] Thrift itself needs GlobalOutput;
 
 ---
- lib/cpp/src/thrift/TOutput.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/cpp/src/thrift/TOutput.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/cpp/src/thrift/TOutput.h b/lib/cpp/src/thrift/TOutput.h
-index 8a9061a..c208508 100644
+index 8a9061a..e47e23c 100644
 --- a/lib/cpp/src/thrift/TOutput.h
 +++ b/lib/cpp/src/thrift/TOutput.h
+@@ -20,7 +20,7 @@
+ #ifndef _THRIFT_OUTPUT_H_
+ #define _THRIFT_OUTPUT_H_ 1
+ 
+-//#include <thrift/thrift_export.h>
++#include <thrift/thrift_export.h>
+ 
+ namespace apache {
+ namespace thrift {
 @@ -53,7 +53,7 @@ private:
    void (*f_)(const char*);
  };
