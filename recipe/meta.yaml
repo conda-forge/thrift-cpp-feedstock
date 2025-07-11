@@ -10,6 +10,7 @@ source:
     patches:
       - patches/0001-windows-fixes.patch                             # [win]
       - patches/0002-Add-boost-throw_exception-implementation.patch  # [win]
+      - patches/0003-Thrift-itself-needs-GlobalOutput.patch          # [win]
 
 build:
   number: 0
