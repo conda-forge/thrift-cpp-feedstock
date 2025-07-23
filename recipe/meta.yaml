@@ -13,7 +13,7 @@ source:
       - patches/0003-Thrift-itself-needs-GlobalOutput.patch          # [win]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
   ignore_run_exports_from:
