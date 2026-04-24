@@ -9,13 +9,13 @@ channel_targets:
 cxx_compiler:
 - vs2022
 libboost_headers:
-- '1.88'
+- '1.90'
 libevent:
 - 2.1.12
 libthrift:
 - 0.22.0
 openssl:
-- '3'
+- '3.5'
 target_platform:
 - win-64
 zlib:
