@@ -1,4 +1,4 @@
-{% set version = "0.22.0" %}
+{% set version = "0.23.0" %}
 
 package:
   name: thrift-split
@@ -6,14 +6,14 @@ package:
 
 source:
   - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
-    sha256: 794a0e455787960d9f27ab92c38e34da27e8deeda7a5db0e59dc64a00df8a1e5
+    sha256: 1859d932d2ae1f13d16c5a196931208c116310a5ff50f2bfd11d3db03be8f46f
     patches:
       - patches/0001-windows-fixes.patch                             # [win]
       - patches/0002-Add-boost-throw_exception-implementation.patch  # [win]
       - patches/0003-Thrift-itself-needs-GlobalOutput.patch          # [win]
 
 build:
-  number: 2
+  number: 0
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
   ignore_run_exports_from:
