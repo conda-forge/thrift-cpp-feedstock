@@ -5,7 +5,7 @@ package:
   version: {{ version }}
 
 source:
-  - url: http://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
+  - url: https://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
     sha256: 794a0e455787960d9f27ab92c38e34da27e8deeda7a5db0e59dc64a00df8a1e5
     patches:
       - patches/0001-windows-fixes.patch                             # [win]
@@ -13,7 +13,7 @@ source:
       - patches/0003-Thrift-itself-needs-GlobalOutput.patch          # [win]
 
 build:
-  number: 2
+  number: 3
   run_exports:
     - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
   ignore_run_exports_from:
@@ -122,6 +122,7 @@ outputs:
         # presence of binaries
         - test -f $PREFIX/bin/thrift                    # [unix]
         - if not exist %LIBRARY_BIN%\thrift.exe exit 1  # [win]
+        - thrift --version
 
   - name: thrift-cpp
     build:
