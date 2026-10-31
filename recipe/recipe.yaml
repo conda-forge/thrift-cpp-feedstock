@@ -110,7 +110,7 @@ outputs:
           - pkg-config --print-errors --exact-version "${{ version }}" thrift
           - pkg-config --print-errors --exact-version "${{ version }}" thrift-nb
           - pkg-config --print-errors --exact-version "${{ version }}" thrift-z
-          # test CMake integration, i.e. find_package(thrift)
+          # test CMake integration, i.e. find_package(thrift) and basic linkage
           - cd cmake_test
           - if: win
             then: cmake -GNinja %CMAKE_ARGS% .
