@@ -172,4 +172,5 @@ extra:
     - jakirkham
     - xhochy
     - h-vetinari
+    - wolfv
   feedstock-name: thrift-cpp
