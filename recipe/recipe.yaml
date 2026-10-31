@@ -1,54 +1,64 @@
-{% set version = "0.25.0" %}
+context:
+  version: "0.25.0"
 
-package:
+recipe:
   name: thrift-split
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  - url: https://archive.apache.org/dist/thrift/{{ version }}/thrift-{{ version }}.tar.gz
-    sha256: 66da4707214c54c94bac082103dc67adaf9e08925662700f269170a7b534b214
-    patches:
-      - patches/0001-windows-fixes.patch                             # [win]
-      - patches/0002-Add-boost-throw_exception-implementation.patch  # [win]
+  url: https://archive.apache.org/dist/thrift/${{ version }}/thrift-${{ version }}.tar.gz
+  sha256: 66da4707214c54c94bac082103dc67adaf9e08925662700f269170a7b534b214
+  patches:
+    - if: win
+      then:
+        - patches/0001-windows-fixes.patch
+        - patches/0002-Add-boost-throw_exception-implementation.patch
 
 build:
   number: 0
-  run_exports:
-    - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
-  ignore_run_exports_from:
-    # we only need the binaries at build-time
-    - winflexbison
-
-requirements:
-  build:
-    - {{ compiler("c") }}
-    - {{ stdlib("c") }}
-    - {{ compiler("cxx") }}
-    - cmake
-    - ninja
-    - pkg-config
-    - bison           # [unix]
-    - flex            # [unix]
-    - winflexbison    # [win]
-  host:
-    - libboost-headers
-    - libevent
-    - openssl
-    - zlib
-  run:
 
 outputs:
-  - name: libthrift
-    script: install.sh  # [unix]
-    script: install.bat  # [win]
+  - staging:
+      name: thrift-build
     build:
-      run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
+      script:
+        file: build
     requirements:
       build:
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - ninja
+        - pkg-config
+        - if: win
+          then: winflexbison
+          else:
+            - bison
+            - flex
+      host:
+        - libboost-headers
+        - libevent
+        - openssl
+        - zlib
+      ignore_run_exports:
+        from_package:
+          - winflexbison
+
+  - package:
+      name: libthrift
+    inherit: thrift-build
+    build:
+      script:
+        file: install
+    requirements:
+      run_exports:
+        - ${{ pin_subpackage('libthrift', upper_bound='x.x.x') }}
+      build:
+        # for strong run-exports
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
         - cmake
         - ninja
       host:
@@ -56,95 +66,111 @@ outputs:
         - libevent
         - openssl
         - zlib
-    test:
-      requires:
-        # cmake needs compiler to be able to run package detection, see
-        # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
-        - {{ compiler('cxx') }}
-        - cmake
-        - ninja
-        - pkg-config
-        # find_package(thrift) really wants to find zlib
-        - zlib  # [linux or win]
-      files:
-        - cmake_test/
-      commands:
-        {% for each in ["thrift", "thriftnb", "thriftz"] %}
-        # presence of shared libs
-        - test -f $PREFIX/lib/lib{{ each }}.so                  # [linux]
-        - test -f $PREFIX/lib/lib{{ each }}.dylib               # [osx]
-        - if not exist %LIBRARY_LIB%\{{ each }}md.lib exit 1    # [win]
-        - if not exist %LIBRARY_BIN%\{{ each }}md.dll exit 1    # [win]
+    tests:
+      - package_contents:
+          include:
+            - thrift/Thrift.h
+          lib:
+            - if: unix
+              then:
+                - thrift
+                - thriftnb
+                - thriftz
+              else:
+                - thriftmd
+                - thriftnbmd
+                - thriftzmd
+          files:
+            # absence of static libraries & binaries
+            not_exists:
+              - if: unix
+                then:
+                  - lib/libthrift.a
+                  - lib/libthriftnb.a
+                  - lib/libthriftz.a
+                  - bin/thrift
+                else:
+                  - Library/bin/thrift.exe
+      - requirements:
+          run:
+            # cmake needs compiler to be able to run package detection, see
+            # https://discourse.cmake.org/t/questions-about-find-package-cli-msvc/6194
+            - ${{ compiler('cxx') }}
+            - cmake
+            - ninja
+            - pkg-config
+            # find_package(thrift) really wants to find zlib
+            - if: linux or win
+              then: zlib
+        files:
+          recipe:
+            - cmake_test/
+        script:
+          # pkg-config metadata (different naming than DSOs; uses hyphen, no "lib" prefix)
+          - pkg-config --print-errors --exact-version "${{ version }}" thrift
+          - pkg-config --print-errors --exact-version "${{ version }}" thrift-nb
+          - pkg-config --print-errors --exact-version "${{ version }}" thrift-z
+          # test CMake integration, i.e. find_package(thrift)
+          - cd cmake_test
+          - if: win
+            then: cmake -GNinja %CMAKE_ARGS% .
+            else: cmake -GNinja $CMAKE_ARGS .
+          - cmake --build .
+          - ctest --output-on-failure
 
-        # absence of static libs
-        - test ! -f $PREFIX/lib/lib{{ each }}.a                 # [unix]
-        {% endfor %}
-
-        # absence of binaries
-        - test ! -f $PREFIX/bin/thrift                          # [unix]
-        - if exist %LIBRARY_BIN%\thrift.exe exit 1              # [win]
-
-        # presence of headers
-        - test -f $PREFIX/include/thrift/Thrift.h               # [unix]
-        - if not exist %LIBRARY_INC%\thrift\Thrift.h exit 1     # [win]
-
-        # pkg-config metadata (different naming than DSOs; uses hyphen, no "lib" prefix)
-        {% for each in ["thrift", "thrift-nb", "thrift-z"] %}
-        - pkg-config --print-errors --exact-version "{{ version }}" {{ each }}
-        {% endfor %}
-
-        # test CMake integration, i.e. find_package(thrift)
-        - cd cmake_test
-        - cmake -GNinja $CMAKE_ARGS .   # [unix]
-        - cmake -GNinja %CMAKE_ARGS% .  # [win]
-
-  - name: thrift-compiler
-    script: install.sh  # [unix]
-    script: install.bat  # [win]
+  - package:
+      name: thrift-compiler
+    inherit:
+      from: thrift-build
+      run_exports: false
     build:
-      run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
+      script:
+        file: install
+      files:
+        - ${{ 'Library/bin/thrift.exe' if win else 'bin/thrift' }}
     requirements:
+      run_exports:
+        - ${{ pin_subpackage('libthrift', upper_bound='x.x.x') }}
       build:
         # for strong run-exports
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage("libthrift", exact=true) }}
+        - ${{ pin_subpackage('libthrift', exact=true) }}
       run:
-        - {{ pin_subpackage("libthrift", exact=true) }}
-    test:
-      commands:
-        # presence of binaries
-        - test -f $PREFIX/bin/thrift                    # [unix]
-        - if not exist %LIBRARY_BIN%\thrift.exe exit 1  # [win]
-        - thrift --version
+        - ${{ pin_subpackage('libthrift', exact=true) }}
+    tests:
+      - package_contents:
+          files:
+            - if: unix
+              then: bin/thrift
+              else: Library/bin/thrift.exe
+      - script:
+          - thrift --version
 
-  - name: thrift-cpp
-    build:
-      run_exports:
-        - {{ pin_subpackage("libthrift", max_pin="x.x.x") }}
+  - package:
+      name: thrift-cpp
     requirements:
+      run_exports:
+        - ${{ pin_subpackage('libthrift', upper_bound='x.x.x') }}
       host:
-        - {{ pin_subpackage("libthrift", exact=true) }}
-        - {{ pin_subpackage("thrift-compiler", exact=true) }}
+        - ${{ pin_subpackage('libthrift', exact=true) }}
+        - ${{ pin_subpackage('thrift-compiler', exact=true) }}
       run:
-        - {{ pin_subpackage("libthrift", exact=true) }}
-        - {{ pin_subpackage("thrift-compiler", exact=true) }}
-    test:
-      commands:
-        - echo "tested in other outputs"
+        - ${{ pin_subpackage('libthrift', exact=true) }}
+        - ${{ pin_subpackage('thrift-compiler', exact=true) }}
+    tests:
+      - script: thrift --version
 
 about:
-  home: http://thrift.apache.org
+  homepage: https://thrift.apache.org
   license: Apache-2.0
   license_file: LICENSE
-  summary: >-
-    Compiler and C++ libraries and headers for the Apache Thrift RPC system
-  dev_url: https://github.com/apache/thrift
+  summary: Compiler and C++ libraries and headers for the Apache Thrift RPC system
+  repository: https://github.com/apache/thrift
 
 extra:
   recipe-maintainers:
