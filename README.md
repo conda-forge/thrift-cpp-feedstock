@@ -3,7 +3,7 @@ About thrift-cpp-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/thrift-cpp-feedstock/blob/main/LICENSE.txt)
 
-Home: http://thrift.apache.org
+Home: https://thrift.apache.org/
 
 Package license: Apache-2.0
 

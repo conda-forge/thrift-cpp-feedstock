@@ -22,8 +22,6 @@ libboost_headers:
 - '1.90'
 libevent:
 - 2.1.12
-libthrift:
-- 0.22.0
 openssl:
 - '3.5'
 target_platform:
