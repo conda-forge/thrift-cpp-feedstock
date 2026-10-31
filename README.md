@@ -227,5 +227,6 @@ Feedstock Maintainers
 * [@jakirkham](https://github.com/jakirkham/)
 * [@msarahan](https://github.com/msarahan/)
 * [@wesm](https://github.com/wesm/)
+* [@wolfv](https://github.com/wolfv/)
 * [@xhochy](https://github.com/xhochy/)
 
