@@ -20,8 +20,6 @@ libboost_headers:
 - '1.90'
 libevent:
 - 2.1.12
-libthrift:
-- 0.22.0
 macos_machine:
 - x86_64-apple-darwin13.4.0
 openssl:
