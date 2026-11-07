@@ -19,7 +19,7 @@ cxx_compiler_version:
 libboost_headers:
 - '1.90'
 libevent:
-- 2.1.12
+- 2.1.13
 macos_machine:
 - arm64-apple-darwin20.0.0
 openssl:
