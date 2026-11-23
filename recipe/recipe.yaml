@@ -30,7 +30,7 @@ outputs:
         - ${{ compiler('cxx') }}
         - cmake
         - ninja
-        - pkg-config
+        - pkgconf
         - if: win
           then: winflexbison
           else:
@@ -98,7 +98,7 @@ outputs:
             - ${{ compiler('cxx') }}
             - cmake
             - ninja
-            - pkg-config
+            - pkgconf
             # find_package(thrift) really wants to find zlib
             - if: linux or win
               then: zlib
