@@ -15,7 +15,7 @@ source:
         - patches/0002-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - staging:
